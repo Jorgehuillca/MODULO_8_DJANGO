@@ -22,5 +22,5 @@ urlpatterns = [
     include('company.urls'),
     include('emails.urls'), 
     include('reports.urls'),
-    include('statics.urls'),
+    include('app_statistics.urls'),
 ]
