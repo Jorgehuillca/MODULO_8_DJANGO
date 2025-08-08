@@ -1,0 +1,19 @@
+# Entorno virtual (tu carpeta env)
+env/
+
+# Base de datos local de SQLite
+db.sqlite3
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+
+# Archivos generados por pytest u otras pruebas
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Archivos de configuración local
+*.env
+.env
