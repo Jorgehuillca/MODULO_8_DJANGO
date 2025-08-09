@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'emails',
     'reports',
     'app_statistics',
+    'base_models',
 ]
 
 MIDDLEWARE = [
