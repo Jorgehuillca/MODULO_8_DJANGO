@@ -4,6 +4,8 @@ from django.db import models
 class CompanyData(models.Model):
     company_name = models.CharField(max_length=255)
     company_logo = models.ImageField(upload_to='logos/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def get_logo_url(self):
         if self.company_logo:
