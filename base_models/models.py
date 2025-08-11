@@ -8,6 +8,10 @@ class AppointmentStatus(models.Model):
 class Patient(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
+
 class Region(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
 
@@ -71,7 +75,7 @@ class Therapist(models.Model):
 
 class Appointment(models.Model):
     appointment_date = models.DateField(null=True, blank=True)
-    appointment_hour = models.DateField(null=True, blank=True)
+    appointment_hour = models.TimeField(null=True, blank=True)
     ailments = models.CharField(max_length=255, null=True, blank=True)
     diagnosis = models.CharField(max_length=255, null=True, blank=True)
     surgeries = models.CharField(max_length=255, null=True, blank=True)
@@ -85,6 +89,7 @@ class Appointment(models.Model):
     social_benefit = models.BooleanField(null=True, blank=True)
     payment = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     ticket_number = models.IntegerField(null=True, blank=True)
+    rating = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
 
     appointment_status = models.ForeignKey(AppointmentStatus, on_delete=models.SET_NULL, null=True, blank=True)
     payment_type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, null=True, blank=True)
