@@ -66,5 +66,17 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
 
         serializer = CompanyDataSerializer(company)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['get'])
+    def show(self, request, pk=None):
+        """Obtiene los datos de una empresa."""
+        try:
+            company = self.get_object()
+        except Http404:
+            return Response({"error": "Empresa no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = CompanyDataSerializer(company)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
