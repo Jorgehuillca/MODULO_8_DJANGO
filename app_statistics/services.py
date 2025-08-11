@@ -26,7 +26,7 @@ class StatisticsService:
         return {(p["payment_type__name"] or "Sin tipo"): p["usos"] for p in pagos}
 
     def get_rendimiento_terapeutas(self, start, end):
-        # 1. Consulta base: sesiones e ingresos por terapeuta (replicando Laravel)
+        # 1. Consulta base: sesiones e ingresos por terapeuta 
         stats = list(
             Appointment.objects
             .filter(
@@ -35,7 +35,7 @@ class StatisticsService:
             )
             .values("therapist__id")
             .annotate(
-                # Formato de nombre igual que Laravel: "Apellido1 Apellido2, Nombre"
+                # Formato de nombre  "Apellido1 Apellido2, Nombre"
                 terapeuta=Concat(
                     'therapist__paternal_lastname',
                     Value(' '),
@@ -53,7 +53,7 @@ class StatisticsService:
         
         # 2. Calculamos promedios globales
         total_sesiones = sum(s['sesiones'] for s in stats)
-        total_ingresos = sum(float(s['ingresos'] or 0) for s in stats)  # Convertir a float
+        total_ingresos = sum(float(s['ingresos'] or 0) for s in stats)  
         num_terapeutas = len(stats)
         
         prom_sesiones = total_sesiones / num_terapeutas if num_terapeutas > 0 else 1
@@ -62,9 +62,9 @@ class StatisticsService:
         # 3. Calcular rating original para cada terapeuta
         for stat in stats:
             sesiones = stat['sesiones']
-            ingresos = float(stat['ingresos'] or 0)  # Convertir a float
+            ingresos = float(stat['ingresos'] or 0)  
             
-            # Fórmula exacta de Laravel: 70% sesiones, 30% ingresos
+            # Fórmula 70% sesiones, 30% ingresos
             rating_original = (sesiones / prom_sesiones) * 0.7 + (ingresos / prom_ingresos) * 0.3
             stat['raiting_original'] = rating_original
         
@@ -78,24 +78,24 @@ class StatisticsService:
             
             resultado.append({
                 "id": stat["therapist__id"],
-                "terapeuta": stat['terapeuta'] or "Sin nombre",  # Cambié 'nombre' por 'terapeuta' 
+                "terapeuta": stat['terapeuta'] or "Sin nombre",   
                 "sesiones": stat["sesiones"],
                 "ingresos": float(stat["ingresos"]) if stat["ingresos"] else 0.0,
-                "raiting": round(scaled_rating, 2)  # Cambié 'rating_5' por 'raiting'
+                "raiting": round(scaled_rating, 2) 
             })
         
         return resultado
 
     def get_ingresos_por_dia_semana(self, start, end):
-        # MySQL DAYNAME() vs Django ExtractWeekDay tienen diferentes mapeos
+        
         dias_semana = {
-            1: "Domingo",      # Django: 1=Sunday, MySQL DAYNAME: Sunday  
-            2: "Lunes",      # Django: 2=Monday, MySQL DAYNAME: Monday
-            3: "Martes",     # Django: 3=Tuesday, MySQL DAYNAME: Tuesday
-            4: "Miercoles",   # Django: 4=Wednesday, MySQL DAYNAME: Wednesday
-            5: "Jueves",    # Django: 5=Thursday, MySQL DAYNAME: Thursday
-            6: "Viernes",      # Django: 6=Friday, MySQL DAYNAME: Friday
-            7: "Sabado"     # Django: 7=Saturday, MySQL DAYNAME: Saturday
+            1: "Domingo",       
+            2: "Lunes",      
+            3: "Martes",     
+            4: "Miercoles",   
+            5: "Jueves",    
+            6: "Viernes",      
+            7: "Sabado"     
         }
         
         ingresos_raw = (
@@ -106,11 +106,11 @@ class StatisticsService:
             )
             .annotate(dia_semana=ExtractWeekDay("appointment_date"))
             .values("dia_semana")
-            .annotate(total=Sum("payment"))  # Cambié 'ingresos' por 'total' para match Laravel
+            .annotate(total=Sum("payment"))  
             .order_by("dia_semana")
         )
         
-        # Retornar como dict plano igual que Laravel
+        
         resultado = {}
         for item in ingresos_raw:
             dia_nombre = dias_semana.get(item["dia_semana"], f"Día {item['dia_semana']}")
@@ -120,8 +120,8 @@ class StatisticsService:
 
     def get_sesiones_por_dia_semana(self, start, end):
         dias_semana = {
-            1: "Sunday", 2: "Monday", 3: "Tuesday", 4: "Wednesday",
-            5: "Thursday", 6: "Friday", 7: "Saturday"
+            1: "Domingo", 2: "Lunes", 3: "Martes", 4: "Miercoles",
+            5: "Jueves", 6: "Viernes", 7: "Sabado"
         }
         
         sesiones_raw = (
