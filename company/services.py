@@ -103,9 +103,8 @@ class CompanyService:
             company = CompanyData()
 
         # Actualizar campos
-        company.company_name = data.get('company_name', company.company_name)
-        company.company_email = data.get('company_email', company.company_email)
-        company.company_address = data.get('company_address', company.company_address)
+        if 'company_name' in data:
+            company.company_name = data['company_name']
 
         company.save()
 
