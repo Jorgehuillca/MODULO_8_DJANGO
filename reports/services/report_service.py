@@ -1,7 +1,8 @@
 from datetime import datetime
 from django.utils.timezone import localtime
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 from reports.models import Appointment, PaymentType, Therapist  # Debes tener estos modelos creados
+from django.db import models
 
 class ReportService:
     def get_appointments_count_by_therapist(self, request):
@@ -129,3 +130,119 @@ class ReportService:
 
         # Retornar la lista de terapeutas con sus pacientes y conteo de citas
         return list(report.values())
+
+    def get_daily_cash(self, request):
+        """
+        Obtiene el resumen diario de efectivo agrupado por tipo de pago y monto total,
+        ordenado específicamente: Cupón, EFECTIVO, Yape, Otros.
+        """
+        query_date = request.GET.get("date")
+
+        if query_date:
+            try:
+                datetime.strptime(query_date, "%Y-%m-%d")
+            except ValueError:
+                return {"error": "Formato de fecha inválido. Use YYYY-MM-DD."}
+        else:
+            query_date = localtime().date().strftime("%Y-%m-%d")
+
+        # Consulta: citas del día con pago, que no estén eliminadas
+        payments = (
+            Appointment.objects
+            .filter(
+                appointment_date=query_date,
+                deleted_at__isnull=True,
+                payment__isnull=False,
+                payment_type__isnull=False,
+            )
+            .values('payment_type__name')
+            .annotate(total_payment=models.Sum('payment'))
+        )
+
+        # Crear diccionario para ordenar segun orden requerido
+        order = {"Cupón": 0, "EFECTIVO": 1, "Yape": 2}
+
+        # Separar los que tienen nombre en orden y los otros
+        pagos_ordenados = []
+        otros = []
+
+        for p in payments:
+            tipo = p['payment_type__name']
+            if tipo in order:
+                pagos_ordenados.append(p)
+            else:
+                otros.append(p)
+
+        # Ordenar pagos_ordenados según el orden definido
+        pagos_ordenados.sort(key=lambda x: order[x['payment_type__name']])
+        # Agregar al final los "otros"
+        pagos_ordenados.extend(otros)
+
+        # Cambiar estructura para mejor legibilidad, si quieres:
+        result = [
+            {
+                "payment_type": p['payment_type__name'],
+                "total_payment": float(p['total_payment'])
+            }
+            for p in pagos_ordenados
+        ]
+
+        return result
+
+    def get_appointments_between_dates(self, request):
+        """
+        Obtiene todas las citas entre dos fechas dadas (inclusive),
+        con información del paciente y terapeuta.
+        """
+        start_date = request.GET.get("start_date")
+        end_date = request.GET.get("end_date")
+
+        if not start_date or not end_date:
+            return {"error": "Parámetros start_date y end_date son obligatorios."}
+
+        try:
+            datetime.strptime(start_date, "%Y-%m-%d")
+            datetime.strptime(end_date, "%Y-%m-%d")
+        except ValueError:
+            return {"error": "Formato de fecha inválido. Use YYYY-MM-DD."}
+
+        appointments = (
+            Appointment.objects
+            .select_related("patient", "therapist")
+            .filter(
+                appointment_date__gte=start_date,
+                appointment_date__lte=end_date,
+                deleted_at__isnull=True
+            )
+            .order_by("appointment_date", "appointment_hour")
+        )
+
+        result = []
+        for app in appointments:
+            therapist_name = "Sin terapeuta asignado"
+            if app.therapist:
+                therapist_name = " ".join(filter(None, [
+                    app.therapist.paternal_lastname,
+                    app.therapist.maternal_lastname,
+                    app.therapist.name
+                ]))
+
+            patient_name = "Paciente desconocido"
+            if app.patient:
+                patient_name = " ".join(filter(None, [
+                    app.patient.paternal_lastname,
+                    app.patient.maternal_lastname,
+                    app.patient.name
+                ]))
+
+            result.append({
+                "appointment_id": app.id,
+                "appointment_date": app.appointment_date.strftime("%Y-%m-%d"),
+                "appointment_hour": app.appointment_hour if isinstance(app.appointment_hour, str) else app.appointment_hour.strftime("%H:%M"),
+                "therapist": therapist_name,
+                "patient": patient_name,
+                "payment": float(app.payment) if app.payment else 0,
+                "payment_type": app.payment_type.name if app.payment_type else "No definido"
+            })
+
+        return result

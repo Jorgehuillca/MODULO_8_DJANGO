@@ -1,26 +1,40 @@
 from django.http import JsonResponse
 from .services.report_service import ReportService
 
-# Crear una instancia del servicio que maneja la lógica de los reportes
 report_service = ReportService()
 
 def get_number_appointments_per_therapist(request):
     """
-    Vista que recibe una petición HTTP y devuelve un JSON con el número de citas
-    por terapeuta para una fecha dada (parámetro GET "date").
+    Devuelve JSON con el número de citas por terapeuta para una fecha dada.
     """
-    # Llamar al servicio para obtener los datos
     data = report_service.get_appointments_count_by_therapist(request)
-    # Devolver los datos como JsonResponse
+    if isinstance(data, dict) and "error" in data:
+        return JsonResponse(data, status=400)
     return JsonResponse(data, safe=False)
-
 
 def get_patients_by_therapist(request):
     """
-    Vista que recibe una petición HTTP y devuelve un JSON con los pacientes
-    agrupados por terapeuta para una fecha dada (parámetro GET "date").
+    Devuelve JSON con los pacientes agrupados por terapeuta para una fecha dada.
     """
-    # Llamar al servicio para obtener los datos
     data = report_service.get_patients_by_therapist(request)
-    # Devolver los datos como JsonResponse
+    if isinstance(data, dict) and "error" in data:
+        return JsonResponse(data, status=400)
+    return JsonResponse(data, safe=False)
+
+def get_daily_cash(request):
+    """
+    Devuelve JSON con el resumen diario de efectivo agrupado por tipo de pago.
+    """
+    data = report_service.get_daily_cash(request)
+    if isinstance(data, dict) and "error" in data:
+        return JsonResponse(data, status=400)
+    return JsonResponse(data, safe=False)
+
+def get_appointments_between_dates(request):
+    """
+    Devuelve JSON con todas las citas entre dos fechas con info de paciente y terapeuta.
+    """
+    data = report_service.get_appointments_between_dates(request)
+    if isinstance(data, dict) and "error" in data:
+        return JsonResponse(data, status=400)
     return JsonResponse(data, safe=False)
