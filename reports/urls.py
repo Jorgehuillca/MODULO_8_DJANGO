@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-app_name = 'reports'  # Opcional, pero recomendado si usas namespaced URLs
+#app_name = 'reports'  # Opcional, pero recomendado si usas namespaced URLs
 
 urlpatterns = [
     path('', views.reports_dashboard, name='reports_dashboard'),
