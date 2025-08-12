@@ -4,7 +4,7 @@
  */
 
 // Variables globales
-const API_BASE_URL = '/reports/';
+//const API_BASE_URL = '';
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 /**
@@ -96,7 +96,7 @@ async function loadTherapistAppointments(date) {
     loading.style.display = 'block';
     
     try {
-        const data = await fetchData(`${API_BASE_URL}appointments-per-therapist/?date=${date}`);
+        const data = await fetchData(`${window.API_URLS.appointmentsPerTherapist}?date=${date}`);
         
         tbody.innerHTML = '';
         totalEl.textContent = data.total_appointments_count || 0;
@@ -143,7 +143,7 @@ async function loadPatientsByTherapist(date) {
     loading.style.display = 'block';
     
     try {
-        const data = await fetchData(`${API_BASE_URL}patients-by-therapist/?date=${date}`);
+        const data = await fetchData(`${window.API_URLS.patientsByTherapist}?date=${date}`);
         
         container.innerHTML = '';
         
@@ -198,7 +198,7 @@ async function loadDailyCash(date) {
     loading.style.display = 'block';
     
     try {
-        const data = await fetchData(`${API_BASE_URL}daily-cash/?date=${date}`);
+        const data = await fetchData(`${window.API_URLS.dailyCash}?date=${date}`);
         
         container.innerHTML = '';
         
@@ -247,7 +247,7 @@ async function loadDateRangeAppointments(startDate, endDate) {
     loading.style.display = 'block';
     
     try {
-        const data = await fetchData(`${API_BASE_URL}appointments-between-dates/?start_date=${startDate}&end_date=${endDate}`);
+        const data = await fetchData(`${window.API_URLS.appointmentsBetweenDates}?start_date=${startDate}&end_date=${endDate}`);
         
         tbody.innerHTML = '';
         
