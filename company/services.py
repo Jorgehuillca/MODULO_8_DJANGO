@@ -102,13 +102,22 @@ class CompanyService:
             # Si no existe, crear nueva
             company = CompanyData()
 
-        # Actualizar campos
-        if 'company_name' in data:
-            company.company_name = data['company_name']
+         # Validar nombre de la empresa
+        company_name = data.get('company_name', '').strip()
+        if not company_name:
+            raise ValueError("El nombre de la empresa es requerido")
+    
+        company.company_name = company_name
 
-        company.save()
+        # Guardar con manejo de errores
+        try:
+            company.save()
+        except Exception as e:
+            # Aquí podrías registrar el error en logs
+            print(f"Error al guardar empresa: {e}")
+            return None
 
-        # Si viene logo, procesarlo
+        # Procesar el logo si se envía
         if file:
             CompanyService.process_logo(company, file)
 
