@@ -32,6 +32,10 @@ urlpatterns = [
         views.get_appointments_between_dates, 
         name='appointments_between_dates'
     ),
-    path('pruebapdf/', views.prueba_pdf, name='prueba_pdf')
-    
+    path('pruebapdf/', views.prueba_pdf, name='prueba_pdf'),
+    # Nuevas URLs para exportar
+    path('pdf/citas-terapeuta/', views.pdf_citas_terapeuta, name='pdf_citas_terapeuta'),
+    path('pdf/pacientes-terapeuta/', views.pdf_pacientes_terapeuta, name='pdf_pacientes_terapeuta'),
+    path('pdf/resumen-caja/', views.pdf_resumen_caja, name='pdf_resumen_caja'),
+    path('excel/citas-rango/', views.exportar_excel_citas, name='exportar_excel_citas'),
 ]
