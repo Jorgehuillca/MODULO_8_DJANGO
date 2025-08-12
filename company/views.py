@@ -35,10 +35,12 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def show_logo(self, request, pk=None):
+        
         """Muestra el logo de la empresa."""
-        company = self.get_object()
-        if not company.company_logo:
-            raise Http404("Logo no disponible")
+        try:
+            company = self.get_object()
+        except Http404:
+            raise Http404("Empresa no encontrada")
 
         file_path = os.path.join(settings.MEDIA_ROOT, company.company_logo.name)
         if not os.path.exists(file_path):
