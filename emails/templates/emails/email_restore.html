@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirma tu nuevo correo</title>
+</head>
+<body>
+    <p>Hola {{ user.get_full_name|default:user.username }},</p>
+    <p>Para confirmar tu nuevo correo, ingresa este código:</p>
+    <h2>{{ code }}</h2>
+    <p>Este código expira en 10 minutos.</p>
+</body>
+</html>
