@@ -139,7 +139,16 @@
         <!-- Notificaciones -->
         <div class="notifications" id="notifications"></div>
     </div>
-    <a href="{% url 'reports:prueba_pdf' %}"><button>descargar</button></a>
+    <a href="{% url 'prueba_pdf' %}"><button>descargar</button></a>
+    <script>
+        // URLs generadas por Django
+        window.API_URLS = {
+            appointmentsPerTherapist: "{% url 'appointments_per_therapist' %}",
+            patientsByTherapist: "{% url 'patients_by_therapist' %}",
+            dailyCash: "{% url 'daily_cash' %}",
+            appointmentsBetweenDates: "{% url 'appointments_between_dates' %}"
+        };
+    </script>
 
     <script src="{% static 'js/reports.js' %}"></script>
 </body>
