@@ -1,23 +1,52 @@
 from rest_framework import serializers
 from .models import CompanyData
+import os
 
 class UploadImageRequest(serializers.Serializer):
     logo = serializers.ImageField()
+
+    def _get_file_size(self, value):
+        # Intenta obtener size directamente
+        size = getattr(value, 'size', None)
+        if size:
+            return size
+
+        # Si no, intenta por el file-like object (sin consumirlo)
+        file_obj = getattr(value, 'file', value)
+        try:
+            cur = file_obj.tell()
+            file_obj.seek(0, os.SEEK_END)
+            size = file_obj.tell()
+            file_obj.seek(cur)
+            return size
+        except Exception:
+            # último recurso: leer y medir (resetea el puntero si puede)
+            try:
+                content = file_obj.read()
+                size = len(content)
+                if hasattr(file_obj, 'seek'):
+                    file_obj.seek(0)
+                return size
+            except Exception:
+                return 0
+
     def validate_logo(self, value):
         max_size_mb = 2
-        if value.size > max_size_mb * 1024 * 1024:
+        size = self._get_file_size(value)
+
+        if size > max_size_mb * 1024 * 1024:
             raise serializers.ValidationError(f"El logo no puede superar los {max_size_mb} MB.")
-        
-        # Agregar solo un try/except para seguridad:
+
+        # Validación de formato (igual que antes, con fallback)
         try:
-            if value.image.format.lower() not in ['jpeg', 'jpg', 'png']:
+            fmt = value.image.format.lower()
+            if fmt not in ['jpeg', 'jpg', 'png']:
                 raise serializers.ValidationError("Solo se permiten imágenes JPG o PNG.")
         except AttributeError:
-            # Para SVG u otros formatos sin 'image' attribute
             filename_ext = value.name.split('.')[-1].lower()
             if filename_ext not in ['jpg', 'jpeg', 'png']:
                 raise serializers.ValidationError("Solo se permiten imágenes JPG o PNG.")
-        
+
         return value
 
 class CompanyDataSerializer(serializers.ModelSerializer):
