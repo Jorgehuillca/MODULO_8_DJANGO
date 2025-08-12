@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Estadísticas</title>
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>📊 Dashboard de Estadísticas</h1>
+            <div class="date-controls">
+                <label style="color: white;">Fecha inicio:</label>
+                <input type="date" id="startDate" value="2025-08-01">
+                
+                <label style="color: white;">Fecha fin:</label>
+                <input type="date" id="endDate" value="2025-08-31">
+                
+                <button class="btn" onclick="loadStatistics()">🔍 Actualizar</button>
+                <button class="btn" onclick="setToday()">📅 Hoy</button>
+                <button class="btn" onclick="setThisMonth()">📆 Este mes</button>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            Cargando estadísticas...
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div id="dashboard-content" style="display: none;">
+            <!-- Métricas principales -->
+            <div class="metrics-cards">
+                <div class="metric-card">
+                    <div class="metric-value" id="totalPacientes">0</div>
+                    <div class="metric-label">Pacientes</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="totalSesiones">0</div>
+                    <div class="metric-label">Sesiones</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="totalGanancias">S/ 0</div>
+                    <div class="metric-label">Ganancias</div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <!-- Gráfico de ingresos por día -->
+                <div class="card">
+                    <h3 class="card-title">💰 Ingresos por día de la semana</h3>
+                    <div class="chart-container">
+                        <canvas id="ingresosChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico de sesiones por día -->
+                <div class="card">
+                    <h3 class="card-title">📅 Sesiones por día de la semana</h3>
+                    <div class="chart-container">
+                        <canvas id="sesionesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tipos de pago -->
+                <div class="card">
+                    <h3 class="card-title">💳 Tipos de pago</h3>
+                    <div class="chart-container">
+                        <canvas id="pagoChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tipos de pacientes -->
+                <div class="card">
+                    <h3 class="card-title">👥 Tipos de pacientes</h3>
+                    <div class="chart-container">
+                        <canvas id="pacientesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rendimiento de terapeutas -->
+            <div class="card">
+                <h3 class="card-title">⭐ Rendimiento de Terapeutas</h3>
+                <div id="therapistsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript personalizado -->
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>
