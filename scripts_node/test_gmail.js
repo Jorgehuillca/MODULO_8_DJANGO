@@ -21,3 +21,7 @@ transporter.sendMail(mailOptions, (error, info) => {
   }
   console.log("Correo enviado:", info.response);
 });
+
+//cd scripts_node
+
+//node test_gmail.js
