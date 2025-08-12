@@ -26,6 +26,7 @@ function initializeDashboard() {
     
     // Cargar reportes del día actual
     loadSingleDateReports();
+    addExportButtons();
     
     console.log('Dashboard de Reportes iniciado correctamente');
 }
@@ -390,6 +391,49 @@ function handleNetworkError(error, context = '') {
     } else {
         showNotification(`Error inesperado: ${error.message}`, 'error');
     }
+}
+
+function addExportButtons() {
+    // Reporte 1: Citas por Terapeuta
+    const report1Card = document.querySelector('.report-card:nth-child(1) .card-header');
+    const pdfButton1 = createExportButton('PDF', 'btn-pdf', () => {
+        const date = document.getElementById('single-date').value;
+        window.open(`${window.API_URLS.appointmentsPerTherapist.replace('appointments-per-therapist', 'pdf/citas-terapeuta')}?date=${date}`, '_blank');
+    });
+    report1Card.appendChild(pdfButton1);
+
+    // Reporte 2: Pacientes por Terapeuta
+    const report2Card = document.querySelector('.report-card:nth-child(2) .card-header');
+    const pdfButton2 = createExportButton('PDF', 'btn-pdf', () => {
+        const date = document.getElementById('single-date').value;
+        window.open(`${window.API_URLS.patientsByTherapist.replace('patients-by-therapist', 'pdf/pacientes-terapeuta')}?date=${date}`, '_blank');
+    });
+    report2Card.appendChild(pdfButton2);
+
+    // Reporte 3: Resumen de Caja
+    const report3Card = document.querySelector('.report-card:nth-child(3) .card-header');
+    const pdfButton3 = createExportButton('PDF', 'btn-pdf', () => {
+        const date = document.getElementById('single-date').value;
+        window.open(`${window.API_URLS.dailyCash.replace('daily-cash', 'pdf/resumen-caja')}?date=${date}`, '_blank');
+    });
+    report3Card.appendChild(pdfButton3);
+
+    // Reporte 4: Citas en Rango (Excel)
+    const report4Card = document.querySelector('.report-card:nth-child(4) .card-header');
+    const excelButton = createExportButton('Excel', 'btn-excel', () => {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+        window.open(`${window.API_URLS.appointmentsBetweenDates.replace('appointments-between-dates', 'excel/citas-rango')}?start_date=${startDate}&end_date=${endDate}`, '_blank');
+    });
+    report4Card.appendChild(excelButton);
+}
+
+function createExportButton(text, className, onClick) {
+    const button = document.createElement('button');
+    button.className = `btn ${className}`;
+    button.innerHTML = `<i class="fas fa-file-${className.split('-')[1]}"></i> ${text}`;
+    button.onclick = onClick;
+    return button;
 }
 
 // Exportar funciones para uso global (si es necesario)
