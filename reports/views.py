@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from .services.report_service import ReportService
+from django.shortcuts import render
+from django_xhtml2pdf.utils import pdf_decorator
 
 report_service = ReportService()
 
@@ -38,3 +40,10 @@ def get_appointments_between_dates(request):
     if isinstance(data, dict) and "error" in data:
         return JsonResponse(data, status=400)
     return JsonResponse(data, safe=False)
+
+def reports_dashboard(request):
+    return render(request, 'reports.html')
+
+@pdf_decorator(pdfname='archivo.pdf')
+def prueba_pdf(request):
+    return render(request, 'pruebapdf.html')

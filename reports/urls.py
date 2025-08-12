@@ -4,6 +4,7 @@ from . import views
 app_name = 'reports'  # Opcional, pero recomendado si usas namespaced URLs
 
 urlpatterns = [
+    path('', views.reports_dashboard, name='reports_dashboard'),
     # Ruta para obtener la cantidad de citas por terapeuta en una fecha dada
     path(
         'appointments-per-therapist/',
@@ -31,4 +32,6 @@ urlpatterns = [
         views.get_appointments_between_dates, 
         name='appointments_between_dates'
     ),
+    path('pruebapdf/', views.prueba_pdf, name='prueba_pdf')
+    
 ]

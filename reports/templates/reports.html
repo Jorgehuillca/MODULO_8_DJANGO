@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Reportes</title>
+    <link rel="stylesheet" href="{% static 'css/reports.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-chart-line"></i> Dashboard de Reportes</h1>
+            <p class="subtitle">Sistema de gestión de citas y terapeutas</p>
+        </header>
+
+        <!-- Controles de Fecha -->
+        <div class="date-controls">
+            <div class="date-group">
+                <label for="single-date">
+                    <i class="fas fa-calendar-day"></i> Fecha específica:
+                </label>
+                <input type="date" id="single-date" value="">
+                <button class="btn btn-primary" onclick="loadSingleDateReports()">
+                    <i class="fas fa-search"></i> Consultar
+                </button>
+            </div>
+            
+            <div class="date-group">
+                <label for="start-date">
+                    <i class="fas fa-calendar-alt"></i> Rango de fechas:
+                </label>
+                <input type="date" id="start-date" placeholder="Fecha inicio">
+                <span class="date-separator">hasta</span>
+                <input type="date" id="end-date" placeholder="Fecha fin">
+                <button class="btn btn-secondary" onclick="loadDateRangeReport()">
+                    <i class="fas fa-search"></i> Consultar
+                </button>
+            </div>
+        </div>
+
+        <!-- Grid de Reportes -->
+        <div class="reports-grid">
+            <!-- Reporte 1: Citas por Terapeuta -->
+            <div class="report-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-user-md"></i> Citas por Terapeuta</h3>
+                    <div class="loading" id="loading-therapist-appointments" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="total-counter">
+                        <span class="total-label">Total de citas:</span>
+                        <span class="total-value" id="total-appointments">0</span>
+                    </div>
+                    <div class="table-container">
+                        <table id="therapist-appointments-table">
+                            <thead>
+                                <tr>
+                                    <th>Terapeuta</th>
+                                    <th>Cantidad</th>
+                                    <th>Porcentaje</th>
+                                </tr>
+                            </thead>
+                            <tbody id="therapist-appointments-body">
+                                <tr class="no-data">
+                                    <td colspan="3">Selecciona una fecha para ver los datos</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reporte 2: Pacientes por Terapeuta -->
+            <div class="report-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-users"></i> Pacientes por Terapeuta</h3>
+                    <div class="loading" id="loading-patients" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="patients-container" id="patients-container">
+                        <p class="no-data-message">Selecciona una fecha para ver los pacientes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reporte 3: Resumen de Caja -->
+            <div class="report-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-cash-register"></i> Resumen de Caja Diaria</h3>
+                    <div class="loading" id="loading-cash" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="cash-summary" id="cash-summary">
+                        <p class="no-data-message">Selecciona una fecha para ver el resumen de caja</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reporte 4: Citas en Rango de Fechas -->
+            <div class="report-card full-width">
+                <div class="card-header">
+                    <h3><i class="fas fa-calendar-week"></i> Citas en Rango de Fechas</h3>
+                    <div class="loading" id="loading-date-range" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="table-container">
+                        <table id="date-range-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Terapeuta</th>
+                                    <th>Paciente</th>
+                                    <th>Pago</th>
+                                    <th>Tipo de Pago</th>
+                                </tr>
+                            </thead>
+                            <tbody id="date-range-body">
+                                <tr class="no-data">
+                                    <td colspan="6">Selecciona un rango de fechas para ver las citas</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notificaciones -->
+        <div class="notifications" id="notifications"></div>
+    </div>
+    <a href="{% url 'reports:prueba_pdf' %}"><button>descargar</button></a>
+
+    <script src="{% static 'js/reports.js' %}"></script>
+</body>
+</html>
