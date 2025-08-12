@@ -1,7 +1,7 @@
 from django.test import TestCase, RequestFactory
 from reports.services.report_service import ReportService
 from reports.views import get_number_appointments_per_therapist, get_patients_by_therapist, get_daily_cash, get_appointments_between_dates
-from reports.models import Therapist, Appointment, Patient, PaymentType
+from base_models.models import Therapist, Appointment, Patient, PaymentType
 from datetime import date
 
 class ReportServiceTest(TestCase):

@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.utils.timezone import localtime
 from django.db.models import Count, Q, Sum
-from reports.models import Appointment, PaymentType, Therapist  # Debes tener estos modelos creados
+from base_models.models import Appointment, PaymentType, Therapist  # Debes tener estos modelos creados
 from django.db import models
 
 class ReportService:
