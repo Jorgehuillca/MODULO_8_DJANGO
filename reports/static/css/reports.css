@@ -600,3 +600,24 @@ tr:hover:not(.no-data) {
 .fa-spin {
     animation: spin 1s linear infinite;
 }
+
+/* Botones de exportación */
+.btn-pdf {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    color: white;
+    padding: 8px 12px;
+    margin-left: 10px;
+    font-size: 0.8em;
+}
+
+.btn-excel {
+    background: linear-gradient(45deg, #27ae60, #229954);
+    color: white;
+    padding: 8px 12px;
+    margin-left: 10px;
+    font-size: 0.8em;
+}
+
+.card-header .btn {
+    margin-left: 10px;
+}
