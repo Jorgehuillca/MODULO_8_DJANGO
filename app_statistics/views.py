@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from datetime import datetime
 from .services import StatisticsService
 from .serializers import StatisticsResource
+from django.shortcuts import render
 
 class StatisticsViewSet(viewsets.ViewSet):
     @action(detail=False, methods=["get"], url_path="metricas")
@@ -46,6 +47,10 @@ class StatisticsViewSet(viewsets.ViewSet):
                 {"error": f"Error interno del servidor: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+        
+def dashboard_view(request):
+    return render(request, 'dashboard.html')     
+    
 
 
 
