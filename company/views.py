@@ -61,8 +61,12 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
     def store(self, request):
         """Crea o actualiza datos de la empresa y procesa el logo si se envía."""
         file = request.FILES.get('logo')
-        company = CompanyService.store(request.data, file)
-
+        try:
+            company = CompanyService.store(request.data, file)
+        except ValueError as e:
+            # Capturar errores de validación del servicio
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
         if not company:
             return Response({"error": "No se pudo crear/actualizar la empresa"}, status=status.HTTP_400_BAD_REQUEST)
 
