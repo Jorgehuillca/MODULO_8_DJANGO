@@ -7,9 +7,13 @@ class AppointmentStatus(models.Model):
 
 class Patient(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
+    paternal_lastname = models.CharField(max_length=100, null=True, blank=True)  # Apellido paterno
+    maternal_lastname = models.CharField(max_length=100, null=True, blank=True)  # Apellido materno
+    document_number = models.CharField(max_length=20, null=True, blank=True)  # Número de documento (DNI, etc.)
+    primary_phone = models.CharField(max_length=20, null=True, blank=True)  # Teléfono principal de contacto
 
     def __str__(self):
-        return self.name
+        return f"{self.paternal_lastname} {self.maternal_lastname} {self.name}".strip()
 
 
 class Region(models.Model):
@@ -41,7 +45,7 @@ class PaymentType(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.name or "Sin nombre"
+        return self.name
 
 # Tabla Therapist
 class Therapist(models.Model):
@@ -69,7 +73,7 @@ class Therapist(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.name or "Sin nombre"
+        return f"{self.paternal_lastname} {self.maternal_lastname} {self.name}".strip()
 
 # Tabla Appointment
 
@@ -87,14 +91,14 @@ class Appointment(models.Model):
     appointment_type = models.CharField(max_length=255, null=True, blank=True)
     room = models.IntegerField(null=True, blank=True)
     social_benefit = models.BooleanField(null=True, blank=True)
-    payment = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    payment = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     ticket_number = models.IntegerField(null=True, blank=True)
     rating = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
 
     appointment_status = models.ForeignKey(AppointmentStatus, on_delete=models.SET_NULL, null=True, blank=True)
     payment_type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, null=True, blank=True)
     patient = models.ForeignKey(Patient, on_delete=models.SET_NULL, null=True, blank=True)
-    therapist = models.ForeignKey(Therapist, on_delete=models.SET_NULL, null=True, blank=True)
+    therapist = models.ForeignKey(Therapist, on_delete=models.SET_NULL, null=True, blank=True, related_name='appointments')
 
     created_at = models.DateTimeField(null=True, blank=True)
     updated_at = models.DateTimeField(null=True, blank=True)
