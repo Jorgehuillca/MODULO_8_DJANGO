@@ -21,3 +21,5 @@ htmlcov/
 #Archivos temporales en carpetas de migraciones
 **/migrations/*.pyc
 **/migrations/__pycache__/
+
+media/
