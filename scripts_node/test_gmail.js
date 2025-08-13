@@ -10,9 +10,9 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
   from: "60861853campos@gmail.com",
-  to: "60861853campos@gmail.com",
+  to: "jorgehuillcacondori@gmail.com",
   subject: "Prueba Gmail desde Node.js",
-  text: "Si ves esto, tu Gmail funciona correctamente."
+  text: "PRUEBA DE FUNCIÓN CON EL CORREO"
 };
 
 transporter.sendMail(mailOptions, (error, info) => {
