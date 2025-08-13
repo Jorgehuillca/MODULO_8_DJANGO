@@ -65,7 +65,7 @@ APIs REST en company/urls.py (DRF).
 - APIs para gráficos en app_statistics/serializers.py.
 
 - Datos históricos en app_statistics/models.py.
-
+-algo
 ## Instalación
 Requisitos:
 - Python 3.10+, Node.js 18+
