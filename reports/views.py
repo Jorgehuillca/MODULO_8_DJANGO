@@ -47,9 +47,6 @@ def get_appointments_between_dates(request):
 def reports_dashboard(request):
     return render(request, 'reports.html')
 
-@pdf_decorator(pdfname='archivo.pdf')
-def prueba_pdf(request):
-    return render(request, 'pruebapdf.html')
 
 @pdf_decorator(pdfname='citas_terapeuta.pdf')
 def pdf_citas_terapeuta(request):
