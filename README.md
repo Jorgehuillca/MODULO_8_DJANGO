@@ -2,7 +2,7 @@
 --------
 
 ## Meta
-Lograr arquitectura MVT y migrar correctamente el módulo 8 a un entorno Django.
+Lograr arquitectura MVT y migrar correctamente el módulo 8 a un entorno Django..
 
 ##  Estructura del Proyecto  
 ```
