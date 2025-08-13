@@ -1,8 +1,8 @@
-# Módulo 8 con DJANGO 
+## Módulo 8 con DJANGO 
+--------
 
-# Meta
+## Meta
 Lograr arquitectura MVT y migrar correctamente el módulo 8 a un entorno Django.
----
 
 ##  Estructura del Proyecto  
 ```
@@ -29,7 +29,7 @@ modulo8/
 │
 ├── modulo8/                 # Configuración principal
 │   ├── settings.py          # Config SMTP, APIs, etc.
-│   └── urls.py             # Rutas globales
+│   └── urls.py              # Rutas globales
 │
 ├── media/                   # Archivos subidos
 │   └── company/logos/       # Logos empresariales
@@ -49,7 +49,7 @@ class Company(models.Model):
     logo = models.ImageField(upload_to='company/logos/')
     # ... (otros campos según tu models.py)
 
-    - APIs REST en company/urls.py (DRF).
+APIs REST en company/urls.py (DRF).
 
 2. Reportes Automatizados
 - Generación de reportes en reports/services/ (PDF/HTML).
