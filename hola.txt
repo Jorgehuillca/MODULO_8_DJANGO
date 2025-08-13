@@ -1,1 +1,0 @@
-quiero un commit propio para separar esta rama de la main.
