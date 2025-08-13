@@ -1,191 +1,116 @@
-## Módulo 08 - Empresa, Reportes y Comunicación (Django)
+# Módulo 8 con DJANGO 
 
-## Responsabilidades
+---
 
-## Aplicaciones y componentes para:
-
- - Modelo CompanyData
-
- - Sistema de reportes y estadísticas
-
- - Gestión de logos
-
- - Sistema de email
-
- - APIs de reportes y notificaciones
-
-## Meta:
-
- - Lograr arquitectura MTV (Model-Template-View) con APIs REST para ser consumidas por React.
-
-## Estructura en Django:
-
+##  Estructura del Proyecto  
+```
 modulo8/
-├── company/
-│   ├── models.py        # CompanyData
-│   ├── views.py         # APIViews para CRUD de empresa
-│   ├── serializers.py   # Serializadores de CompanyData
-│   ├── services.py      # Lógica de negocio de empresa
-│   ├── urls.py          # Rutas de API /company
-│   └── tests.py
-├── reports/
-│   ├── models.py        # Report
-│   ├── views.py         # API para reportes
-│   ├── serializers.py
-│   ├── services.py      # Generación de reportes
-│   ├── utils.py         # Funciones de exportación (PDF/Excel)
-│   ├── urls.py
-│   └── tests.py
-├── statistics/
-│   ├── models.py        # Statistics
-│   ├── views.py         # API de estadísticas
-│   ├── serializers.py
-│   ├── services.py      # Cálculo de estadísticas
-│   ├── urls.py
-│   └── tests.py
-├── emails/
-│   ├── models.py        # Email log/history
-│   ├── views.py         # API para enviar/ver emails
-│   ├── serializers.py
-│   ├── services.py      # Envío de correos
-│   ├── templates/emails/email_restore.html
-│   ├── urls.py
-│   └── tests.py
-└── notifications/
-    ├── models.py        # Notification
-    ├── views.py         # API para notificaciones
-    ├── serializers.py
-    ├── services.py
-    ├── urls.py
-    └── tests.py
+├── company/                  # Datos empresariales
+│   ├── models.py            # Modelos (Company, Logo)
+│   ├── serializers.py       # Serializadores para APIs
+│   ├── services.py          # Lógica de negocio
+│   └── urls.py              # Endpoints: /api/company/
+│
+├── reports/                 # Sistema de reportes
+│   ├── models.py            # Modelos (Report, Statistics)
+│   ├── templates/           # Plantillas para PDF/HTML
+│   └── services/            # Generación de reportes
+│
+├── emails/                  # Comunicaciones
+│   ├── models.py            # Modelos (Email, Template)
+│   ├── templates/           # Plantillas de correo
+│   └── test_gmail.js        # Integración con Node.js
+│
+├── app_statistics/          # Dashboard y métricas
+│   ├── models.py            # Modelos (Metric, Dashboard)
+│   └── serializers.py       # APIs para gráficos
+│
+├── modulo8/                 # Configuración principal
+│   ├── settings.py          # Config SMTP, APIs, etc.
+│   └── urls.py             # Rutas globales
+│
+├── media/                   # Archivos subidos
+│   └── company/logos/       # Logos empresariales
+│
+└── scripts_node/            # Integración con Node.js
+    ├── package.json         # Dependencias (Nodemailer, etc.)
+    └── test_gmail.js        # Pruebas de envío
+```
 
+# Funcionalidades Principales
+1. Gestión Empresarial
+Modelo Company en company/models.py:
 
-## Modelos (models.py):
+class Company(models.Model):
+    name = models.CharField(max_length=100)
+    ruc = models.CharField(max_length=20)
+    logo = models.ImageField(upload_to='company/logos/')
+    # ... (otros campos según tu models.py)
 
-| Campo             | Tipo       |
-| ----------------- | ---------- |
-| name              | CharField  |
-| ruc               | CharField  |
-| address           | CharField  |
-| phone             | CharField  |
-| email             | EmailField |
-| website           | URLField   |
-| logo              | ImageField |
-| description       | TextField  |
-| opening\_hours    | JSONField  |
-| privacy\_policy   | TextField  |
-| terms\_conditions | TextField  |
+    - APIs REST en company/urls.py (DRF).
 
-## Report:
+2. Reportes Automatizados
+- Generación de reportes en reports/services/ (PDF/HTML).
 
- - Tipo de reporte (patients, appointments, therapists, revenue, etc.)
+- Plantillas personalizables en reports/templates/.
 
- - Parámetros de filtro
+3. Sistema de Emails
+- Integración con Node.js (Nodemailer) en emails/test_gmail.js.
 
- - Archivo generado (PDF o Excel)
+- Plantillas de correo en emails/templates/.
 
- - Fecha de creación
+4. Dashboard de Estadísticas
+- APIs para gráficos en app_statistics/serializers.py.
 
-## Statistics:
+- Datos históricos en app_statistics/models.py.
 
- - Tipo de estadística (dashboard, patients, appointments, revenue, etc.)
+## Instalación
+Requisitos:
+- Python 3.10+, Node.js 18+
 
- - Datos (JSON)
+## Pasos
+Clonar repositorio:
 
-## Email:
+- git clone https://github.com/Jorgehuillca/MODULO_8_DJANGO.giturl
+- cd MODULO_8_DJANGO
 
- - Destinatario(s)
+## Entorno virtual (Python):
 
- - Asunto
+- python -m venv .venv
+- .\venv\Scripts\activate
+- pip install -r requirements.txt
 
- - Cuerpo
+## Migraciones:
 
- - Estado de envío
+- python manage.py migrate
+- python manage.py makemigrations
+- python manage.py migrate
 
- - Fecha de envío
+## Configurar Node.js (emails) y probar test de email:
 
-## Notification:
+- cd scripts_node
+- node test_gmail.js
 
- - Título
+Endpoints API (Django REST Framework)
 
- - Mensaje
-
- - Tipo (email, push, sms, whatsapp)
-
- - Estado (read / unread)
-
- - Fecha
-
-## Vistas / APIs (views.py + urls.py):
-
-Se implementarán usando Django REST Framework
-
-| Método | Endpoint                       | Descripción                   |
-| ------ | ------------------------------ | ----------------------------- |
-| GET    | `/api/company`                 | Obtener datos de empresa      |
-| PUT    | `/api/company`                 | Actualizar datos de empresa   |
-| POST   | `/api/company/logo`            | Subir logo                    |
-| GET    | `/api/reports/patients`        | Reporte de pacientes          |
-| GET    | `/api/reports/appointments`    | Reporte de citas              |
-| GET    | `/api/reports/therapists`      | Reporte de terapeutas         |
-| GET    | `/api/reports/revenue`         | Reporte de ingresos           |
-| POST   | `/api/reports/generate`        | Generar reporte personalizado |
-| GET    | `/api/reports/{id}/download`   | Descargar reporte             |
-| GET    | `/api/statistics/dashboard`    | Estadísticas del dashboard    |
-| GET    | `/api/statistics/patients`     | Estadísticas de pacientes     |
-| GET    | `/api/statistics/appointments` | Estadísticas de citas         |
-| GET    | `/api/statistics/revenue`      | Estadísticas de ingresos      |
-| POST   | `/api/emails/send`             | Enviar email                  |
-| GET    | `/api/emails/history`          | Historial de emails           |
-| POST   | `/api/notifications/send`      | Enviar notificación           |
-| GET    | `/api/notifications`           | Listar notificaciones         |
-| PUT    | `/api/notifications/{id}/read` | Marcar como leída             |
-
-
-## Servicios (services.py):
-
- - CompanyService → CRUD empresa + subida de logo.
-
- - ReportService → Generación y exportación de reportes PDF/Excel.
-
- - StatisticsService → Consultas y agregaciones para estadísticas.
-
- - EmailService → Envío de correos usando EmailMessage o send_mass_mail.
-
- - NotificationService → Envío y gestión de notificaciones push, email, SMS, WhatsApp.
-
-## Dependencias:
-
- - Django REST Framework → APIs REST
-
- - django-filter → Filtrado en reportes
-
- - Pillow → Manejo de imágenes (logo)
-
- - xhtml2pdf o WeasyPrint → Exportación a PDF
-
- - pandas / openpyxl → Exportación a Excel
-
- - Celery + Redis → Envío de emails/notificaciones en segundo plano
-
- - Chart.js (en React) → Visualización de estadísticas
+|Método	            | Ruta	                 |           Descripción                |
+| ----------------- | ---------------------- | ------------------------------------ |
+|GET	            | /api/company/	         |    Obtener datos empresariales       |
+|POST	            | /api/reports/generate	 |        Generar reporte (PDF/HTML)    |
+|GET	            | /api/statistics/	     |    Datos para gráficos del dashboard |
 
 ## Entregables
 
-[ ]  CRUD empresa funcional
+[ ] CRUD empresa funcional
 
-[ ]  Sistema de reportes operativo
+[ ] Sistema de reportes operativo
 
-[ ]  Dashboard de estadísticas implementado
+[ ] Dashboard de estadísticas implementado
 
-[ ]  Sistema de email configurado
+[ ] Sistema de email configurado
 
-[ ]  Notificaciones en tiempo real
+[ ] Notificaciones en tiempo real
 
-[ ]  Exportación de reportes a PDF/Excel
+[ ] Exportación de reportes a PDF/Excel
 
-[ ]  APIs documentadas en Swagger/DRF
-
-[ ]  Integración lista para React
-
-[ ]  Tests unitarios y de integración
+[ ] Tests unitarios y de integración

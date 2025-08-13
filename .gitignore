@@ -1,5 +1,6 @@
 # Entorno virtual (tu carpeta env)
 env/
+.venv/
 
 # Base de datos local de SQLite
 db.sqlite3
