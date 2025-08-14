@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Correo Unificado</title>
+</head>
+<body>
+    <h1>{{ site_name }} Logo</h1>
+    <p>Hola {{ user.get_full_name }},</p>
+
+    {% if email_type == 'verify' %}
+        <p>Para completar la verificación de tu cuenta, ingresa el siguiente código: <strong>{{ code }}</strong></p>
+    {% elif email_type == 'reset' %}
+        <p>Has solicitado recuperar tu contraseña. Usa el siguiente código: <strong>{{ code }}</strong></p>
+    {% elif email_type == 'change_email' %}
+        <p>Para confirmar el cambio de correo, ingresa este código: <strong>{{ code }}</strong></p>
+    {% endif %}
+
+    <p>Este código expirará en 10 minutos.</p>
+    <p>— El equipo de {{ site_name }}</p>
+</body>
+</html>
