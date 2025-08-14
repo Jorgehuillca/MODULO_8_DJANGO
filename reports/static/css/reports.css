@@ -1,16 +1,24 @@
 /* Reset y estilos base */
 * {
+    /* scrollbar */
+        scrollbar-color: #4CAF50 #2a2a2a;
+        scrollbar-width: thin;
+    /* scrollbar */
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2b2b2b 0%, #2b2a2b 100%);
     min-height: 100vh;
     color: #333;
     line-height: 1.6;
+    /* ocupar espacio desde el principio scroll */
+     overflow-y: scroll;
+     /* ocupar espacio desde el principio scroll */
 }
 
 .container {
@@ -51,17 +59,37 @@ body {
 }
 
 /* Controles de fecha */
+.all-date{
+    display: flex;
+    justify-content: space-around;
+}
+
 .date-controls {
-    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    background: #222121;
     padding: 25px;
     border-radius: 15px;
     margin-bottom: 30px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-wrap: wrap;
     gap: 30px;
-    justify-content: center;
-    align-items: end;
+    flex-direction: column;
+}
+
+
+.date-range{
+    display: flex;
+}
+
+.especific-date{
+    padding: 0rem 1rem 0rem 1rem;
+}
+
+.start-date{
+    padding: 0rem 1rem 0rem 1rem;
+}
+
+.end-date{
+    padding: 0rem 1rem 0rem 1rem
 }
 
 .date-group {
@@ -73,7 +101,7 @@ body {
 
 .date-group label {
     font-weight: 600;
-    color: #2c3e50;
+    color: #ffffff;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -136,9 +164,6 @@ body {
 
 /* Grid de reportes */
 .reports-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 25px;
     margin-bottom: 30px;
 }
 
@@ -147,36 +172,50 @@ body {
 }
 
 /* Tarjetas de reporte */
-.report-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* =========== Prueba Nicolayus ===========*/
+.card-content {
+    display: none;
+    max-height: 0;
+    transition: max-height 0.4s ease;
+    transition: all 0.3s ease;
+    margin: 1rem  1rem ;
 }
 
-.report-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+.card-content.visible {
+    display: block;
 }
+/* FinPrueba Nicolayus */
 
 .card-header {
-    background: linear-gradient(45deg, #2c3e50, #3498db);
+    /* cambiado color fondo por nicolayus */
+    border: solid #229954;
+    border-width: 1px; 
+    border-radius: 15px;
+    background: linear-gradient(45deg, #474747, #464040);
+    border-color: #229954;
+    margin: 1rem 1rem 0rem 1rem;
     color: white;
     padding: 20px 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
+}
+
+.active{
+    border: solid #229954;
+    border-width: 1px; 
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
 }
 
 .card-header h3 {
     font-size: 1.2em;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 0;
-}
+    gap: 10px;}
 
 .loading {
     font-size: 1.2em;
@@ -190,10 +229,18 @@ body {
 
 .card-content {
     padding: 25px;
+    margin-top: 0;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
     max-height: 400px;
     overflow-y: auto;
 }
 
+.card-content.visible {
+    background-color: #229954;
+}
+
+/* =======================FinPrueba Nicolayus =======================*/
 /* Contador total */
 .total-counter {
     display: flex;
@@ -573,7 +620,35 @@ tr:hover:not(.no-data) {
 .card-content::-webkit-scrollbar-thumb:hover {
     background: #95a5a6;
 }
-
+.fa-calendar-day:before {
+    content: "\f783";
+    color: rgb(37, 165, 43);
+}
+.fa-calendar-alt:before, .fa-calendar-days:before {
+    content: "\f073";
+    color: rgb(37, 165, 43);
+}
+.fa-user-doctor:before, .fa-user-md:before {
+    content: "\f0f0";
+    color: rgb(37, 165, 43);
+    font-size: 30px;
+}
+.fa-users:before {
+    content: "\f0c0";
+    color: rgb(37, 165, 43);
+    font-size: 30px;
+}
+.fa-cash-register:before {
+    content: "\f788";
+    color: rgb(37, 165, 43);
+    font-size: 30px;
+}
+.fa-calendar-week:before {
+    content: "\f784";
+    color: rgb(37, 165, 43);
+    font-size: 30px;
+}
+/* Cambio Nicolas */
 /* Efectos adicionales */
 .report-card::before {
     content: '';
@@ -586,7 +661,7 @@ tr:hover:not(.no-data) {
     opacity: 0;
     transition: opacity 0.3s ease;
 }
-
+/* Cambio Nicolas */
 .report-card:hover::before {
     opacity: 1;
 }
