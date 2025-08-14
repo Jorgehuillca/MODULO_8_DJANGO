@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <style>
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .nav-buttons { margin-bottom: 20px; }
+    .nav-buttons button {
+        padding: 10px 15px;
+        margin-right: 10px;
+        border: none;
+        background: #667eea;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .nav-buttons button:hover {
+        background: #5563d6;
+    }
+  </style>
+</head>
+<body>
+  <h1>📌 Dashboard</h1>
+
+  <div class="nav-buttons">
+    <button onclick="showPanel('email')">📧 Email Restore</button>
+    <button onclick="showPanel('password')">🔑 Password Restore</button>
+    <button onclick="showPanel('verification')">✅ Verification</button>
+  </div>
+
+  <div id="email" class="panel active">
+    {% include "emails/email_restore.html" %}
+  </div>
+
+  <div id="password" class="panel">
+    {% include "emails/password_restore.html" %}
+  </div>
+
+  <div id="verification" class="panel">
+    {% include "emails/verification.html" %}
+  </div>
+
+  <script>
+    function showPanel(panelId) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# emails/views.py
+from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -22,3 +22,15 @@ class EmailController(APIView):
 
         EmailService.send_verification_email(user, type_email)
         return Response({"message": "Código enviado correctamente"}, status=status.HTTP_200_OK)
+
+def dashboard_email(request):
+    return render(request, 'dashboard_email.html')
+
+def email_restore(request):
+    return render(request, 'emails/email_restore.html')
+
+def password_restore(request):
+    return render(request, 'emails/password_restore.html')
+
+def verification(request):
+    return render(request, 'emails/verification.html')
