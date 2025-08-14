@@ -5,7 +5,7 @@ class TerapeutaSerializer(serializers.Serializer):
     terapeuta = serializers.CharField()  # Cambié 'nombre' por 'terapeuta'
     sesiones = serializers.IntegerField()
     ingresos = serializers.FloatField()
-    raiting = serializers.FloatField()  # Cambié 'rating_5' por 'raiting' para match Laravel
+    raiting = serializers.FloatField()  # 
 
 class MetricasSerializer(serializers.Serializer):
     ttlpacientes = serializers.IntegerField()
