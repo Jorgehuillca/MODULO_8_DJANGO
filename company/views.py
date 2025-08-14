@@ -4,6 +4,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from django.http import FileResponse, Http404
 from django.conf import settings
+from django.shortcuts import render #para la vista html
 import os
 
 from .models import CompanyData
@@ -83,6 +84,10 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
 
         serializer = CompanyDataSerializer(company)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+def company_view(request):
+    return render(request, 'company/company_details.html') #para el html ps papeto
 
 
 

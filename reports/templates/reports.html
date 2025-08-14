@@ -9,6 +9,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+<nav class="navbar">
+    <ul>
+        <li><a href="/admin/" {% if request.path == "/admin/" %}class="active"{% endif %}>⚙️ Admin</a></li>
+        <li><a href="{% url 'company_details' %}">🏢 Compañía</a></li>
+        <li><a href="{% url 'dashboard_email' %}">✉️ Emails</a></li>
+        <li><a href="{% url 'statistics_dashboard' %}">📊 Ver Estadísticas</a></li>
+    </ul>
+</nav>
     <div class="container">
         <header class="header">
             <h1><i class="fas fa-chart-line"></i> Dashboard de Reportes</h1>
