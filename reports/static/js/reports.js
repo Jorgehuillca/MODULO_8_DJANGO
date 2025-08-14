@@ -436,6 +436,22 @@ function createExportButton(text, className, onClick) {
     return button;
 }
 
+// Colocado por nicolayus para los selec
+// Función para alternar contenido tipo acordeón
+document.querySelectorAll('.card-header').forEach(header => {
+    header.addEventListener('click', () => {
+        const card = header.parentElement;
+        const content = card.querySelector('.card-content');
+
+        // Alterna el estado solo de esta tarjeta
+        content.classList.toggle('visible');
+        header.classList.toggle('active');
+    });
+});
+
+
+// colocado por nicolayus terminado
+
 // Exportar funciones para uso global (si es necesario)
 window.loadSingleDateReports = loadSingleDateReports;
 window.loadDateRangeReport = loadDateRangeReport;
