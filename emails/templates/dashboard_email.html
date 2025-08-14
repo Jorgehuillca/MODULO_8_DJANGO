@@ -13,36 +13,48 @@
     .nav-buttons button {
         padding: 10px 15px;
         margin-right: 10px;
-        border: none;
-        background: #667eea;
-        color: white;
         border-radius: 6px;
         cursor: pointer;
-    }
-    .nav-buttons button:hover {
-        background: #5563d6;
     }
   </style>
 </head>
 <body>
-  <h1>📌 Dashboard</h1>
+      <nav class="navbar">
+        <ul class="navbar-list">
+            <li>
+                <a href="/admin/" class="{% if request.path == '/admin/' %}active{% endif %}">⚙️ Admin</a>
+            </li>
+            <li>
+                <a href="{% url 'company_details' %}">🏢 Compañía</a>
+            </li>
+            <li>
+                <a href="{% url 'dashboard_email' %}">✉️ Emails</a>
+            </li>
+            <li>
+                <a href="{% url 'statistics_dashboard' %}">📊 Ver Estadísticas</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+      <h1>📌 Dashboard</h1>
 
-  <div class="nav-buttons">
-    <button onclick="showPanel('email')">📧 Email Restore</button>
-    <button onclick="showPanel('password')">🔑 Password Restore</button>
-    <button onclick="showPanel('verification')">✅ Verification</button>
-  </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="showPanel('email')">📧 Email Restore</button>
+      <button class="btn" onclick="showPanel('password')">🔑 Password Restore</button>
+      <button class="btn" onclick="showPanel('verification')">✅ Verification</button>
+    </div>
 
-  <div id="email" class="panel active">
-    {% include "emails/email_restore.html" %}
-  </div>
+    <div id="email" class="panel active">
+      {% include "emails/email_restore.html" %}
+    </div>
 
-  <div id="password" class="panel">
-    {% include "emails/password_restore.html" %}
-  </div>
+    <div id="password" class="panel">
+      {% include "emails/password_restore.html" %}
+    </div>
 
-  <div id="verification" class="panel">
-    {% include "emails/verification.html" %}
+    <div id="verification" class="panel">
+      {% include "emails/verification.html" %}
+    </div>
   </div>
 
   <script>

@@ -13,6 +13,23 @@
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
+    <nav class="navbar">
+        <ul class="navbar-list">
+            <li>
+                <a href="/admin/" class="{% if request.path == '/admin/' %}active{% endif %}">⚙️ Admin</a>
+            </li>
+            <li>
+                <a href="{% url 'company_details' %}">🏢 Compañía</a>
+            </li>
+            <li>
+                <a href="{% url 'dashboard_email' %}">✉️ Emails</a>
+            </li>
+            <li>
+                <a href="{% url 'statistics_dashboard' %}">📊 Ver Estadísticas</a>
+            </li>
+        </ul>
+    </nav>
+
     <div class="dashboard-container">
         <div class="header">
             <h1>📊 Dashboard de Estadísticas</h1>
