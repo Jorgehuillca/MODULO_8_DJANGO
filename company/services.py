@@ -47,32 +47,51 @@ class CompanyService:
                 default_storage.delete(os.path.join(CompanyService.LOGO_FOLDER, f))
 
     @staticmethod
+    def clear_company_logo(company):
+        """
+        Elimina solo el logo de una empresa específica.
+        """
+        if company.company_logo:
+            if default_storage.exists(company.company_logo.name):
+                default_storage.delete(company.company_logo.name)
+
+    @staticmethod
     def process_logo(company, file):
         """
         Valida y guarda el logo.
         """
-        if file.size > CompanyService.MAX_FILE_SIZE:
-            raise ValueError("El logo excede el tamaño máximo permitido.")
-
-        ext = file.name.split('.')[-1].lower()
-        if ext not in CompanyService.ALLOWED_EXTENSIONS:
-            raise ValueError("Formato no permitido. Solo JPG o PNG.")
-
         try:
-            file.seek(0)
-            with Image.open(file) as img:
-                img.verify()
-            file.seek(0)
-        except Exception:
-            raise ValueError("El archivo no es una imagen válida.")
+            # Validación de tamaño
+            if file.size > CompanyService.MAX_FILE_SIZE:
+                raise ValueError(f"El logo excede el tamaño máximo permitido de {CompanyService.MAX_FILE_SIZE} bytes.")
 
-        CompanyService.clear_company_folder()
-        file_path = CompanyService.generate_company_logo_file_name(company.company_name, file.name)
-        saved_path = default_storage.save(file_path, file)
+            # Validación de extensión
+            ext = file.name.split('.')[-1].lower()
+            if ext not in CompanyService.ALLOWED_EXTENSIONS:
+                raise ValueError(f"Formato no permitido. Solo se aceptan: {', '.join(CompanyService.ALLOWED_EXTENSIONS)}")
 
-        company.company_logo = saved_path
-        company.save()
-        return company
+            # Validación de integridad de imagen
+            try:
+                file.seek(0)
+                with Image.open(file) as img:
+                    img.verify()
+                file.seek(0)
+            except Exception as img_error:
+                raise ValueError("El archivo no es una imagen válida o está corrupta")
+
+            # Limpiar logo anterior de esta empresa específica
+            CompanyService.clear_company_logo(company)
+
+            # Guardar nuevo logo
+            file_path = CompanyService.generate_company_logo_file_name(company.company_name, file.name)
+            saved_path = default_storage.save(file_path, file)
+
+            company.company_logo = saved_path
+            company.save()
+            return company
+
+        except Exception as e:
+            raise ValueError(f"Error al procesar el logo: {str(e)}")
     
     #nuevas funciones
     
@@ -92,33 +111,53 @@ class CompanyService:
         Crea o actualiza datos de la empresa y procesa el logo si se envía.
         """
         company_id = data.get('id')
-        if company_id:
-            # Si existe, actualizar
-            try:
-                company = CompanyData.objects.get(pk=company_id)
-            except CompanyData.DoesNotExist:
-                return None
-        else:
-            # Si no existe, crear nueva
-            company = CompanyData()
-
-         # Validar nombre de la empresa
-        company_name = data.get('company_name', '').strip()
-        if not company_name:
-            raise ValueError("El nombre de la empresa es requerido")
-    
-        company.company_name = company_name
-
-        # Guardar con manejo de errores
         try:
+            if company_id:
+                company = CompanyData.objects.get(pk=company_id)
+            else:
+                company = CompanyData()
+
+            # Validar nombre de la empresa
+            company_name = data.get('company_name', '').strip()
+            if not company_name:
+                raise ValueError("El nombre de la empresa es requerido")
+        
+            company.company_name = company_name
+            
+            # Si hay archivo, procesamos el logo ANTES de guardar
+            if file:
+                # Validación de tamaño
+                if file.size > CompanyService.MAX_FILE_SIZE:
+                    raise ValueError(f"El logo excede el tamaño máximo permitido de {CompanyService.MAX_FILE_SIZE} bytes.")
+
+                # Validación de extensión
+                ext = file.name.split('.')[-1].lower()
+                if ext not in CompanyService.ALLOWED_EXTENSIONS:
+                    raise ValueError(f"Formato no permitido. Solo se aceptan: {', '.join(CompanyService.ALLOWED_EXTENSIONS)}")
+
+                # Validación de integridad de imagen
+                try:
+                    file.seek(0)
+                    with Image.open(file) as img:
+                        img.verify()
+                    file.seek(0)
+                except Exception:
+                    raise ValueError("El archivo no es una imagen válida o está corrupta")
+
+                # Limpiar logo anterior de esta empresa específica si existe
+                if company.pk:  # Solo si la empresa ya existía
+                    CompanyService.clear_company_logo(company)
+
+                # Guardar archivo del logo
+                file_path = CompanyService.generate_company_logo_file_name(company_name, file.name)
+                saved_path = default_storage.save(file_path, file)
+                company.company_logo = saved_path
+
+            # Guardamos UNA sola vez con todos los datos
             company.save()
+            return company
+
+        except CompanyData.DoesNotExist:
+            raise ValueError("Empresa no encontrada")
         except Exception as e:
-            # Aquí podrías registrar el error en logs
-            print(f"Error al guardar empresa: {e}")
-            return None
-
-        # Procesar el logo si se envía
-        if file:
-            CompanyService.process_logo(company, file)
-
-        return company
+            raise ValueError(f"Error interno al guardar los datos: {str(e)}")
