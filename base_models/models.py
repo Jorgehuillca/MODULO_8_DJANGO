@@ -31,10 +31,6 @@ class DocumentType(models.Model):
 class Country(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
 
-class User(models.Model):
-    username = models.CharField(max_length=50, null=True, blank=True)
-
-#tablas de la aplicación base_models
 
 # Tabla PaymentType
 class PaymentType(models.Model):
@@ -107,19 +103,4 @@ class Appointment(models.Model):
     def __str__(self):
         patient_name = self.patient.name if self.patient else "No patient"
         return f"Appointment #{self.id} - {patient_name} - {self.appointment_date}"
-
-
-
-# Tabla UserVerificationCode
-class UserVerificationCode(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    code = models.CharField(max_length=50, null=True, blank=True)
-    expires_at = models.DateTimeField(auto_now=True, null=True, blank=True)
-    failed_attempts = models.IntegerField(default=0)
-    locked_until = models.DateTimeField(null=True, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return f"VerificationCode #{self.id} - User: {self.user.username} - Code: {self.code}"
 
