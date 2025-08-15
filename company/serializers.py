@@ -50,12 +50,9 @@ class UploadImageRequest(serializers.Serializer):
         return value
 
 class CompanyDataSerializer(serializers.ModelSerializer):
-    """
-    Serializer principal para datos de empresa
-    Expone los métodos que YA tienes en tu modelo
-    """
     logo_url = serializers.SerializerMethodField()
     has_logo = serializers.SerializerMethodField()
+    
     
     class Meta:
         model = CompanyData
@@ -63,9 +60,14 @@ class CompanyDataSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at', 'updated_at', 'logo_url', 'has_logo']
     
     def get_logo_url(self, obj):
-        # Llama al método que YA está en tu modelo
-        return obj.get_logo_url()
+        """Genera la URL del logo directamente en el serializador"""
+        if obj.company_logo:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.company_logo.url)
+            return obj.company_logo.url
+        return None
     
     def get_has_logo(self, obj):
-        # Llama al método que YA está en tu modelo
-        return obj.has_logo()
+        """Verifica si hay logo"""
+        return bool(obj.company_logo)
