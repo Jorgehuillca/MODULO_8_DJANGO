@@ -10,15 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Establece la fecha de hoy en los controles
- */
-function setToday() {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('startDate').value = today;
-    document.getElementById('endDate').value = today;
-}
-
-/**
  * Establece las fechas del mes actual
  */
 function setThisMonth() {
@@ -81,7 +72,7 @@ function renderDashboard(data) {
     document.getElementById('totalPacientes').textContent = data.metricas.ttlpacientes || 0;
     document.getElementById('totalSesiones').textContent = data.metricas.ttlsesiones || 0;
     document.getElementById('totalGanancias').textContent = 
-        `S/ ${(data.metricas.ttlganancias || 0).toFixed(2)}`;
+        `S/ ${formatCurrency(data.metricas.ttlganancias || 0)}`;
 
     // Gráficos
     renderIngresosChart(data.ingresos);
@@ -104,6 +95,7 @@ function renderIngresosChart(ingresos) {
     
     if (charts.ingresos) charts.ingresos.destroy();
 
+    // eslint-disable-next-line no-undef
     charts.ingresos = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -145,6 +137,7 @@ function renderSesionesChart(sesiones) {
     
     if (charts.sesiones) charts.sesiones.destroy();
 
+    // eslint-disable-next-line no-undef
     charts.sesiones = new Chart(ctx, {
         type: 'line',
         data: {
@@ -191,6 +184,7 @@ function renderPagoChart(tipos_pago) {
 
     const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
 
+    // eslint-disable-next-line no-undef
     charts.pago = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -215,6 +209,7 @@ function renderPacientesChart(tipos_pacientes) {
     
     if (charts.pacientes) charts.pacientes.destroy();
 
+    // eslint-disable-next-line no-undef
     charts.pacientes = new Chart(ctx, {
         type: 'pie',
         data: {
@@ -248,7 +243,7 @@ function renderTherapists(terapeutas) {
                 <div class="therapist-name">${terapeuta.terapeuta}</div>
                 <div class="therapist-stats">
                     <span>📅 ${terapeuta.sesiones} sesiones</span>
-                    <span>💰 S/ ${terapeuta.ingresos.toFixed(2)}</span>
+                    <span>💰 S/ ${formatNumber(terapeuta.ingresos)}</span>
                 </div>
             </div>
             <div class="therapist-rating">⭐ ${terapeuta.raiting}/5</div>
@@ -301,5 +296,5 @@ function formatCurrency(amount) {
     return new Intl.NumberFormat('es-PE', {
         style: 'currency',
         currency: 'PEN'
-    }).format(amount);
+    }).format(amount).replace('PEN', '').trim();
 }
