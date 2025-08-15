@@ -15,13 +15,13 @@
                 <a href="/admin/" class="{% if request.path == '/admin/' %}active{% endif %}">⚙️ Admin</a>
             </li>
             <li>
-                <a href="{% url 'company_form' %}">🏢 Compañía</a>
-            </li>
-            <li>
                 <a href="{% url 'dashboard_email' %}">✉️ Emails</a>
             </li>
             <li>
                 <a href="{% url 'statistics_dashboard' %}">📊 Ver Estadísticas</a>
+            </li>
+            <li>
+                <a href="{% url 'reports_dashboard' %}">📑 Ver Reportes</a>
             </li>
         </ul>
     </nav>
