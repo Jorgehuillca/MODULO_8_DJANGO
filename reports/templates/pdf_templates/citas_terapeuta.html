@@ -33,7 +33,7 @@
                 <td>{{ therapist.paternal_lastname }} {{ therapist.maternal_lastname }} {{ therapist.name }}</td>
                 <td>{{ therapist.appointments_count }}</td>
                 <td>
-                    {% if data.total_appointments_count|add:'0' &gt; 0 %}
+                    {% if data.total_appointments_count|add:'0' > 0 %}
                         {{ therapist.percentage|default:0|floatformat:1 }}%
                     {% else %}
                         0%
