@@ -1,375 +1,372 @@
-/* Variables base (modo claro por defecto) */
 :root {
-    --navbar-bg: #2b2b2b ;
-    --navbar-item-bg: #272626;
-    --navbar-text: #ffffff;
-    --navbar-border : #25a52b;
-    --navbar-active: #252525;
-    --navbar-radius: 15px;
-    --navbar-padding: 0.5rem 1rem;
+  --navbar-bg: #2b2b2b;
+  --navbar-item-bg: #272626;
+  --navbar-text: #fff;
+  --navbar-border: #25a52b;
+  --navbar-active: #252525;
+  --navbar-radius: 15px;
+  --navbar-padding: 0.5rem 1rem;
 
-    --big-box: #2b2b2b ;
-    --big-box-item: #474747;
-    --big-box-text: #ffffff;
-    --big-box-subtext: #eeeeee;
-    --big-box-border : #25a52b;
-    --big-box-border2 : #218826;
-    --big-box-active: #252525;
-    --big-box-active-item: #3b3b3b;
-    --big-box-radius: 15px;
-    --big-box-padding: 0.5rem 1rem;
+  --big-box: #2b2b2b;
+  --big-box-item: #474747;
+  --big-box-text: #fff;
+  --big-box-subtext: #eee;
+  --big-box-border: #25a52b;
+  --big-box-border2: #218826;
+  --big-box-active: #252525;
+  --big-box-active-item: #3b3b3b;
+  --big-box-radius: 15px;
+  --big-box-padding: 0.5rem 1rem;
 
-    scrollbar-color: #4CAF50 #2a2a2a;
-    scrollbar-width: thin;
+  scrollbar-color: #4CAF50 #2a2a2a;
+  scrollbar-width: thin;
 }
-
 
 /* Reset y base */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    scrollbar-color: var(--navbar-active) var(--navbar-item-bg);
-    scrollbar-width: thin;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scrollbar-color: var(--navbar-active) var(--navbar-item-bg);
+  scrollbar-width: thin;
 }
 
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: var(--navbar-bg);
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--navbar-bg);
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 15%);
 }
 
 .navbar-list {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    gap: 1rem;
-    padding: 1rem;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  gap: 1rem;
+  padding: 1rem;
+  flex-wrap: wrap;
 }
 
 .navbar-list li {
-    background-color: var(--navbar-border);
-    border-radius: var(--navbar-radius);
+  background-color: var(--navbar-border);
+  border-radius: var(--navbar-radius);
 }
 
 .navbar-list a {
-    display: block;
-    padding: var(--navbar-padding);
-    text-decoration: none;
-    color: var(--navbar-text);
-    font-weight: 600;
-    font-size: 18px;
-    transition: background-color 0.3s, transform 0.2s;
-    background-color: var(--navbar-item-bg);
-    border-radius: var(--navbar-radius);
-    border: 1px solid var(--navbar-border);
+  display: block;
+  padding: var(--navbar-padding);
+  text-decoration: none;
+  color: var(--navbar-text);
+  font-weight: 600;
+  font-size: 18px;
+  transition: background-color 0.3s, transform 0.2s;
+  background-color: var(--navbar-item-bg);
+  border-radius: var(--navbar-radius);
+  border: 1px solid var(--navbar-border);
 }
 
 .navbar-list a:hover {
-    background-color: var(--navbar-active);
-    transform: scale(1.05);
+  background-color: var(--navbar-active);
+  transform: scale(1.05);
 }
 
 .navbar-list a.active {
-    background-color: var(--navbar-active);
+  background-color: var(--navbar-active);
 }
 
 /* Responsive */
-@media (max-width: 600px) {
-    .navbar-list {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .navbar-list li {
-        width: 100%;
-        text-align: center;
-    }
+@media (width <= 600px) {
+  .navbar-list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .navbar-list li {
+    width: 100%;
+    text-align: center;
+  }
 }
 
-
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--big-box);
-    min-height: 100vh;
-    padding: 5rem 0px 0px 0px ;
-    /* ocupar espacio desde el principio scroll */
-     overflow-y: scroll;
-     /* ocupar espacio desde el principio scroll */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--big-box);
+  min-height: 100vh;
+  padding: 5rem 0 0;
+  overflow-y: scroll;
 }
 
 .dashboard-container {
-    max-width: 1400px;
-    margin: 0 auto;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .header {
-    background: var(--big-box-);
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 30px;
-    border: 1px solid   var(--big-box-border2);
+  background: var(--big-box-);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  border: 1px solid var(--big-box-border2);
 }
 
 .header h1 {
-    color: white;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
 }
 
 .date-controls {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .date-controls input {
-    padding: 10px;
-    border: 1px solid var(--big-box-border);
-    border-radius: 8px;
-    background: var(--big-box-item);
-    font-size: 14px;
-    color: var(--big-box-text);
+  padding: 10px;
+  border: 1px solid var(--big-box-border);
+  border-radius: 8px;
+  background: var(--big-box-item);
+  font-size: 14px;
+  color: var(--big-box-text);
 }
+
 /* Selector de fecha con el tema del :root */
 input[type="date"] {
-    background-color: var(--navbar-item);
-    color: var(--navbar-text);
-    border: 1px solid var(--navbar-border);
-    border-radius: var(--navbar-radius);
-    padding: 0.5rem 0.75rem;
-    font-size: 16px;
-    font-family: inherit;
+  background-color: var(--navbar-item);
+  color: var(--navbar-text);
+  border: 1px solid var(--navbar-border);
+  border-radius: var(--navbar-radius);
+  padding: 0.5rem 0.75rem;
+  font-size: 16px;
+  font-family: inherit;
 }
 
 /* Icono del calendario en blanco */
 input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-    cursor: pointer;
+  filter: invert(1);
+  cursor: pointer;
 }
 
 /* Al enfocar, borde y brillo con el verde del tema */
 input[type="date"]:focus,
 input[type="date"]:hover {
-    outline: none;
-    border-color: var(--navbar-border);
-    box-shadow: 0 0 5px var(--navbar-border);
+  outline: none;
+  border-color: var(--navbar-border);
+  box-shadow: 0 0 5px var(--navbar-border);
 }
 
 .btn {
-    background: var(--navbar-border);
-    color: var(--big-box-text);
-    box-shadow: 0 5px 10px var(--big-box-border);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
+  background: var(--navbar-border);
+  color: var(--big-box-text);
+  box-shadow: 0 5px 10px var(--big-box-border);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
-    background: var(--big-box-border2);
-    box-shadow: 0 5px 10px var(--big-box-border2);
-    transform: translateY(-2px);
+  background: var(--big-box-border2);
+  box-shadow: 0 5px 10px var(--big-box-border2);
+  transform: translateY(-2px);
 }
 
 .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
 }
 
 .card {
-    background: var(--big-box);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 5px 10px var(--big-box-border);
-    border: 1px solid var(--big-box-border);
-    transition: transform 0.3s ease;
+  background: var(--big-box);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 10px var(--big-box-border);
+  border: 1px solid var(--big-box-border);
+  transition: transform 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    background-color: var(--big-box-active);
+  transform: translateY(-5px);
+  background-color: var(--big-box-active);
 }
 
 .card-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--big-box-text);
-    margin-bottom: 20px;
-    text-align: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--big-box-text);
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .metrics-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .metric-card {
-    background: var(--big-box);
-    padding: 20px;
-    border: 1px solid var(--big-box-border);
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+  background: var(--big-box);
+  padding: 20px;
+  border: 1px solid var(--big-box-border);
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgb(0 0 0 / 10%);
+  transition: transform 0.3s ease;
 }
 
 .metric-card:hover {
-    background-color: var(--big-box-active);
-    transform: scale(1.05);
+  background-color: var(--big-box-active);
+  transform: scale(1.05);
 }
 
 .metric-value {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--navbar-border);
-    margin-bottom: 5px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--navbar-border);
+  margin-bottom: 5px;
 }
 
 .metric-label {
-    font-size: 0.9rem;
-    color: var(--big-box-text);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  font-size: 0.9rem;
+  color: var(--big-box-text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .chart-container {
-    position: relative;
-    height: 300px;
-    margin-top: 20px;
+  position: relative;
+  height: 300px;
+  margin-top: 20px;
 }
 
 .therapist-card {
-    background: linear-gradient(45deg, var(--big-box-border2) 0%, var(--big-box-border) 75%);
-    color: white;
-    margin-bottom: 15px;
-    padding: 20px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.3s ease;
+  background: linear-gradient(45deg, var(--big-box-border2) 0%, var(--big-box-border) 75%);
+  color: white;
+  margin-bottom: 15px;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.3s ease;
 }
 
 .therapist-card:hover {
-    transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 .therapist-info {
-    flex: 1;
+  flex: 1;
 }
 
 .therapist-name {
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .therapist-stats {
-    display: flex;
-    gap: 20px;
-    font-size: 0.9rem;
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
 }
 
 .therapist-rating {
-    background: rgba(255, 255, 255, 0.3);
-    padding: 8px 12px;
-    border-radius: 20px;
-    font-weight: bold;
+  background: rgb(255 255 255 / 30%);
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: bold;
 }
 
 .loading {
-    text-align: center;
-    padding: 40px;
-    font-size: 1.2rem;
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: white;
+  background: rgb(255 255 255 / 10%);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
 }
 
 .error {
-    background: #ffebee;
-    color: #c62828;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 20px 0;
-    border-left: 4px solid #c62828;
+  background: #ffebee;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  border-left: 4px solid #c62828;
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-    .header h1 {
-        font-size: 2rem;
-    }
-    
-    .date-controls {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .date-controls input,
-    .date-controls button {
-        width: 100%;
-        margin: 5px 0;
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .metrics-cards {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    }
-    
-    .metric-value {
-        font-size: 1.8rem;
-    }
-    
-    .therapist-card {
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-    }
-    
-    .therapist-rating {
-        align-self: flex-end;
-        margin-top: 10px;
-    }
+@media (width <= 768px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .date-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .date-controls input,
+  .date-controls button {
+    width: 100%;
+    margin: 5px 0;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .metrics-cards {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  
+  .metric-value {
+    font-size: 1.8rem;
+  }
+  
+  .therapist-card {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  
+  .therapist-rating {
+    align-self: flex-end;
+    margin-top: 10px;
+  }
 }
 
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-    
-    .header {
-        padding: 15px;
-    }
-    
-    .header h1 {
-        font-size: 1.8rem;
-    }
-    
-    .card {
-        padding: 15px;
-    }
-    
-    .chart-container {
-        height: 250px;
-    }
+@media (width <= 480px) {
+  body {
+    padding: 10px;
+  }
+  
+  .header {
+    padding: 15px;
+  }
+  
+  .header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  .chart-container {
+    height: 250px;
+  }
 }
