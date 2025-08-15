@@ -135,13 +135,13 @@ body {
   color: #ffd700;
 }
 
-.no-data i {
+.no-data i {                   /* stylelint-disable-line rule-empty-line-before */
   font-size: 4rem;
   margin-bottom: 20px;
   color: #ddd;
 }
 
-.toast i {
+.toast i {                      /* stylelint-disable-line rule-empty-line-before */
   margin-right: 10px;
 }
 
@@ -567,7 +567,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
   }
-  to {
+  to {                            /* stylelint-disable-line rule-empty-line-before */
     transform: translateX(0);
     opacity: 1;
   }
