@@ -568,18 +568,16 @@ tr:hover:not(.no-data) {
   color: #2c3e50;
 }
 
-/* stylelint-disable no-descending-specificity */
 @keyframes slide-in {
   from {
     transform: translateX(100%);
     opacity: 0;
   }
-  to {
+  to {                           /* stylelint-disable-line rule-empty-line-before */
     transform: translateX(0);
     opacity: 1;
   }
 }
-/* stylelint-enable no-descending-specificity */
 
 /* Responsive */
 @media (width <= 768px) {
