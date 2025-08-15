@@ -1,7 +1,6 @@
----
 name: Run Django Tests
 
-"on":
+on:
   push:
     branches: [main]
   pull_request:
@@ -33,8 +32,8 @@ jobs:
           npm install -g htmlhint
           htmlhint html/index.html || exit 1
 
-            - name: Verificar Codigo JavaScript
-      - run: |
+      - name: Verificar Codigo JavaScript
+        run: |
           npm install -g eslint@8
           echo '{
             "env": { "browser": true, "es2021": true },
@@ -48,4 +47,4 @@ jobs:
         run: |
           npm install -g stylelint stylelint-config-standard
           echo '{ "extends": "stylelint-config-standard" }' > .stylelintrc.json
-          stylelint "**/*".css || exit 1
+          stylelint "**/*.css" || exit 1
