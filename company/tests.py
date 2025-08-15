@@ -184,7 +184,8 @@ class CompanyDataViewSetTest(TestCase):
         response = self.client.get(url)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['company_name'], 'Test Company')
+        self.assertEqual(response.data['status'], 'success')
+        self.assertEqual(response.data['data']['company_name'], 'Test Company')
     
     def test_show_action_not_found(self):
         """Test action show empresa no encontrada"""
