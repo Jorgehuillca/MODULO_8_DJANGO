@@ -568,6 +568,7 @@ tr:hover:not(.no-data) {
   color: #2c3e50;
 }
 
+
 @keyframes slide-in {
   from {
     transform: translateX(100%);

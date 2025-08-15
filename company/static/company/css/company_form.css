@@ -117,6 +117,7 @@ body {
   margin-bottom: 10px;
 }
 
+/* Todos los selectores que usan i deben estar agrupados y ordenados */
 .header h1 i {
   margin-right: 15px;
   color: #ffd700;
@@ -129,14 +130,19 @@ body {
   display: block;
 }
 
-.toast i {
-  margin-right: 10px;
+.form-group label i {
+  margin-right: 8px;
+  color: #25a52b;
 }
 
 .no-data i {
   font-size: 4rem;
   margin-bottom: 20px;
   color: #ddd;
+}
+
+.toast i {
+  margin-right: 10px;
 }
 
 /* Form Section */
@@ -174,11 +180,6 @@ body {
   font-weight: 600;
   color: var(--big-box-text);
   font-size: 1.1rem;
-}
-
-.form-group label i {
-  margin-right: 8px;
-  color: #25a52b;
 }
 
 .form-group input[type="text"] {
@@ -536,13 +537,6 @@ body {
 }
 
 
-.no-data i {
-  font-size: 4rem;
-  margin-bottom: 20px;
-  color: #ddd;
-}
-
-
 .no-data p {
   font-size: 1.2rem;
 }
@@ -569,6 +563,7 @@ body {
 .toast.success { border-left-color: #28a745; }
 .toast.error { border-left-color: #dc3545; }
 .toast.info { border-left-color: #17a2b8; }
+
 
 @keyframes slide-in {
   from {
