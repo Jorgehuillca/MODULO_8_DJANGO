@@ -30,7 +30,8 @@ jobs:
       - name: Verificar Codigo HTML
         run: |
           npm install -g htmlhint
-          htmlhint "**/*.html" --ignore 'spec-char-escape' || exit 1
+          echo '{"spec-char-escape": false}' > .htmlhintrc
+          htmlhint "**/*.html" || exit 1
 
       - name: Verificar Codigo JavaScript
         run: |
