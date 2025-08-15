@@ -125,6 +125,7 @@ body {
   display: block;
 }
 
+/* stylelint-disable no-descending-specificity */
 .form-group label i {
   margin-right: 8px;
   color: #25a52b;
@@ -144,6 +145,7 @@ body {
 .toast i {                      /* stylelint-disable-line rule-empty-line-before */
   margin-right: 10px;
 }
+/* stylelint-enable no-descending-specificity */
 
 /* Form Section */
 .form-section {
