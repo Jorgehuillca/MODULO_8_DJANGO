@@ -3,7 +3,7 @@
     --navbar-bg: #2b2b2b ;
     --navbar-item-bg: #272626;
     --navbar-text: #ffffff;
-    --navbar-border : #229954;
+    --navbar-border : #25a52b;
     --navbar-active: #252525;
     --navbar-radius: 15px;
     --navbar-padding: 0.5rem 1rem;
@@ -11,15 +11,18 @@
     --big-box: #2b2b2b ;
     --big-box-item: #474747;
     --big-box-text: #ffffff;
-    --big-box-border : #229954;
-    --big-box-border2 : #1b693c;
+    --big-box-subtext: #eeeeee;
+    --big-box-border : #25a52b;
+    --big-box-border2 : #218826;
     --big-box-active: #252525;
+    --big-box-active-item: #3b3b3b;
     --big-box-radius: 15px;
     --big-box-padding: 0.5rem 1rem;
 
     scrollbar-color: #4CAF50 #2a2a2a;
     scrollbar-width: thin;
 }
+
 
 /* Reset y base */
 * {
@@ -163,6 +166,7 @@ input[type="date"]:hover {
 .btn {
     background: var(--navbar-border);
     color: var(--big-box-text);
+    box-shadow: 0 5px 10px var(--big-box-border);
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -173,6 +177,7 @@ input[type="date"]:hover {
 
 .btn:hover {
     background: var(--big-box-border2);
+    box-shadow: 0 5px 10px var(--big-box-border2);
     transform: translateY(-2px);
 }
 
@@ -188,7 +193,7 @@ input[type="date"]:hover {
     backdrop-filter: blur(10px);
     border-radius: 15px;
     padding: 25px;
-    box-shadow: 0 8px 15px var(--big-box-border);
+    box-shadow: 0 5px 10px var(--big-box-border);
     border: 1px solid var(--big-box-border);
     transition: transform 0.3s ease;
 }
