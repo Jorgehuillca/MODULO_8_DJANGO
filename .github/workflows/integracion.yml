@@ -31,15 +31,21 @@ jobs:
       - name: Verificar Codigo HTML
         run: |
           npm install -g htmlhint
-          htmlhint html/index.html || exit 1
+          htmlhint "**/*.html" || exit 1
 
       - name: Verificar Codigo JavaScript
         run: |
           npm install -g eslint@8
-          eslint "**/*".js || exit 1
+          echo '{
+            "env": { "browser": true, "es2021": true },
+            "extends": "eslint:recommended",
+            "parserOptions": { "ecmaVersion": 12, "sourceType": "module" },
+            "rules": {}
+          }' > .eslintrc.json
+          eslint "**/*.js" || exit 1
 
       - name: Verificar Codigo CSS
         run: |
           npm install -g stylelint stylelint-config-standard
           echo '{ "extends": "stylelint-config-standard" }' > .stylelintrc.json
-          stylelint "**/*".css || exit 1
+          stylelint "**/*.css" || exit 1
