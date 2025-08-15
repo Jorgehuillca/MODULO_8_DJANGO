@@ -117,12 +117,7 @@ body {
   margin-bottom: 10px;
 }
 
-/* Todos los selectores que usan i deben estar agrupados y ordenados */
-.header h1 i {
-  margin-right: 15px;
-  color: #ffd700;
-}
-
+/* Todos los selectores que usan i deben estar agrupados y ordenados por especificidad */
 .file-upload-text i {
   font-size: 3rem;
   color: var(--navbar-border);
@@ -133,6 +128,11 @@ body {
 .form-group label i {
   margin-right: 8px;
   color: #25a52b;
+}
+
+.header h1 i {
+  margin-right: 15px;
+  color: #ffd700;
 }
 
 .no-data i {
@@ -523,12 +523,10 @@ body {
   margin: 0 auto 20px;
 }
 
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
 
 .no-data {
   text-align: center;
@@ -536,11 +534,9 @@ body {
   color: #999;
 }
 
-
 .no-data p {
   font-size: 1.2rem;
 }
-
 
 #toast-container {
   position: fixed;
@@ -561,9 +557,10 @@ body {
 }
 
 .toast.success { border-left-color: #28a745; }
-.toast.error { border-left-color: #dc3545; }
-.toast.info { border-left-color: #17a2b8; }
 
+.toast.error { border-left-color: #dc3545; }
+
+.toast.info { border-left-color: #17a2b8; }
 
 @keyframes slide-in {
   from {
