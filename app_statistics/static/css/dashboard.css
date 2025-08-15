@@ -6,7 +6,6 @@
   --navbar-active: #252525;
   --navbar-radius: 15px;
   --navbar-padding: 0.5rem 1rem;
-
   --big-box: #2b2b2b;
   --big-box-item: #474747;
   --big-box-text: #fff;
@@ -17,7 +16,6 @@
   --big-box-active-item: #3b3b3b;
   --big-box-radius: 15px;
   --big-box-padding: 0.5rem 1rem;
-
   scrollbar-color: #4CAF50 #2a2a2a;
   scrollbar-width: thin;
 }
