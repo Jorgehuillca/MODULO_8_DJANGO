@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Empresas</title>
+    <link rel="stylesheet" href="{% static 'company/css/company_form.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="navbar-list">
+            <li>
+                <a href="/admin/" class="{% if request.path == '/admin/' %}active{% endif %}">⚙️ Admin</a>
+            </li>
+            <li>
+                <a href="{% url 'company_form' %}">🏢 Compañía</a>
+            </li>
+            <li>
+                <a href="{% url 'dashboard_email' %}">✉️ Emails</a>
+            </li>
+            <li>
+                <a href="{% url 'statistics_dashboard' %}">📊 Ver Estadísticas</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-building"></i> Gestión de Empresas</h1>
+        </header>
+
+        <!-- Formulario para crear/editar empresa -->
+        <div class="form-section">
+            <div class="form-header">
+                <h2 id="form-title">Nueva Empresa</h2>
+                <button type="button" id="reset-form" class="btn-secondary" style="display: none;">
+                    <i class="fas fa-plus"></i> Nueva Empresa
+                </button>
+            </div>
+            
+            <form id="company-form" enctype="multipart/form-data">
+                <input type="hidden" id="company-id" name="id">
+                
+                <div class="form-group">
+                    <label for="company-name">
+                        <i class="fas fa-building"></i> Nombre de la Empresa
+                    </label>
+                    <input type="text" id="company-name" name="company_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="company-logo">
+                        <i class="fas fa-image"></i> Logo de la Empresa
+                    </label>
+                    <div class="file-upload">
+                        <input type="file" id="company-logo" name="logo" accept=".jpg,.jpeg,.png">
+                        <div class="file-upload-text">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Seleccionar archivo o arrastrar aquí</span>
+                            <small>Solo JPG, JPEG, PNG (máx. 2MB)</small>
+                        </div>
+                    </div>
+                    <div id="file-preview" class="file-preview"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary" id="submit-btn">
+                        <i class="fas fa-save"></i> Guardar Empresa
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Lista de empresas -->
+        <div class="companies-section">
+            <div class="section-header">
+                <h2><i class="fas fa-list"></i> Empresas Registradas</h2>
+                <button type="button" id="refresh-list" class="btn-secondary">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+            </div>
+            
+            <div id="companies-list" class="companies-grid">
+                <!-- Las empresas se cargarán aquí dinámicamente -->
+            </div>
+            
+            <div id="no-companies" class="no-data" style="display: none;">
+                <i class="fas fa-building-slash"></i>
+                <p>No hay empresas registradas</p>
+            </div>
+        </div>
+
+        <!-- Loading spinner -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
+
+        <!-- Modal para ver imagen completa -->
+        <div id="image-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <img id="modal-image" src="" alt="Logo de empresa">
+                <div class="modal-caption">
+                    <h3 id="modal-company-name"></h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast notifications -->
+        <div id="toast-container"></div>
+    </div>
+
+    <script src="{% static 'company/js/company_form.js' %}"></script>
+</body>
+</html>
