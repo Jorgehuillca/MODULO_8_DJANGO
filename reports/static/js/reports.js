@@ -1,13 +1,4 @@
 /**
- * Dashboard de Reportes - Sistema de Gestión de Citas
- * Script principal para manejar la interfaz y las llamadas a las APIs
- */
-
-// Variables globales
-//const API_BASE_URL = '';
-const DATE_FORMAT = 'YYYY-MM-DD';
-
-/**
  * Inicialización del dashboard
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -44,8 +35,7 @@ async function fetchData(url) {
         }
         return await response.json();
     } catch (error) {
-        showNotification('Error al cargar datos: ' + error.message, 'error');
-        console.error('Error en fetchData:', error);
+        handleNetworkError(error, 'fetchData');
         throw error;
     }
 }
