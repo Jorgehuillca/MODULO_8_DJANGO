@@ -117,11 +117,26 @@ body {
   margin-bottom: 10px;
 }
 
+.header h1 i {
+  margin-right: 15px;
+  color: #ffd700;
+}
+
 .file-upload-text i {
   font-size: 3rem;
   color: var(--navbar-border);
   margin-bottom: 15px;
   display: block;
+}
+
+.toast i {
+  margin-right: 10px;
+}
+
+.no-data i {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  color: #ddd;
 }
 
 /* Form Section */
@@ -507,17 +522,19 @@ body {
   margin: 0 auto 20px;
 }
 
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* No data */
+
 .no-data {
   text-align: center;
   padding: 60px;
   color: #999;
 }
+
 
 .no-data i {
   font-size: 4rem;
@@ -525,11 +542,12 @@ body {
   color: #ddd;
 }
 
+
 .no-data p {
   font-size: 1.2rem;
 }
 
-/* Toast notifications */
+
 #toast-container {
   position: fixed;
   top: 20px;
@@ -552,10 +570,6 @@ body {
 .toast.error { border-left-color: #dc3545; }
 .toast.info { border-left-color: #17a2b8; }
 
-.toast i {
-  margin-right: 10px;
-}
-
 @keyframes slide-in {
   from {
     transform: translateX(100%);
@@ -567,26 +581,25 @@ body {
   }
 }
 
-.header h1 i {
-  margin-right: 15px;
-  color: #ffd700;
-}
-
 /* Responsive */
 @media (width <= 768px) {
   .container {
     padding: 10px;
   }
+  
   .companies-grid {
     grid-template-columns: 1fr;
   }
+  
   .company-header {
     flex-direction: column;
     gap: 15px;
   }
+  
   .company-actions {
     flex-direction: column;
   }
+  
   .form-header {
     flex-direction: column;
     gap: 15px;

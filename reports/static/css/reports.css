@@ -275,6 +275,8 @@ input[type="date"]:hover {
 
 .card-content.visible {
   display: block;
+  background-color: var(--big-box-item);
+  border: 1px solid var(--big-box-border);
 }
 
 .card-header {
@@ -311,11 +313,6 @@ input[type="date"]:hover {
 @keyframes pulse {
   from { opacity: 0.6; }
   to { opacity: 1; }
-}
-
-.card-content.visible {
-  background-color: var(--big-box-item);
-  border: 1px solid var(--big-box-border);
 }
 
 /* Contador total */
