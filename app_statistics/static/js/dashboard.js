@@ -33,9 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
     loadStatistics();
 });
 
-/**
- * Establece las fechas del mes actual
- */
+
+//Establece las fechas del mes actual
+
 function setThisMonth() {
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
@@ -45,19 +45,18 @@ function setThisMonth() {
     document.getElementById('endDate').value = end;
 }
 
-/**
- * Establece las fechas para el día de hoy
- */
+//Establece las fechas para el día de hoy
+/* eslint-disable no-undef */
 function setToday() {
     const today = new Date().toISOString().split('T')[0];
     
     document.getElementById('startDate').value = today;
     document.getElementById('endDate').value = today;
 }
+/* eslint-enable no-undef */
 
-/**
- * Carga las estadísticas desde la API usando axios
- */
+// Carga las estadísticas desde la API usando axios
+
 async function loadStatistics() {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;

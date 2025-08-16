@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import nodemailer from "nodemailer"; // eslint-disable-line no-undef
 
 const transporter = nodemailer.createTransport({
   service: "gmail",

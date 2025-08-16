@@ -156,7 +156,7 @@ class CompanyManager {
         this.showLoading(true);
         
         try {
-            const response = await axios.post(`${this.baseUrl}store/`, formData, {
+            await axios.post(`${this.baseUrl}store/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'X-CSRFToken': this.getCsrfToken()
