@@ -163,8 +163,6 @@ class CompanyManager {
                 }
             });
 
-            const data = response.data;
-
             this.showToast(
                 companyId ? 'Empresa actualizada correctamente' : 'Empresa creada correctamente',
                 'success'
@@ -277,7 +275,7 @@ class CompanyManager {
         }
 
         try {
-            const response = await axios.delete(`${this.baseUrl}${id}/delete_logo/`, {
+            await axios.delete(`${this.baseUrl}${id}/delete_logo/`, {
                 headers: {
                     'X-CSRFToken': this.getCsrfToken()
                 }
@@ -297,7 +295,7 @@ class CompanyManager {
         }
 
         try {
-            const response = await axios.delete(`${this.baseUrl}${id}/`, {
+            await axios.delete(`${this.baseUrl}${id}/`, {
                 headers: {
                     'X-CSRFToken': this.getCsrfToken()
                 }
