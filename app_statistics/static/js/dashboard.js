@@ -3,6 +3,30 @@ let charts = {};
 // Configuración de la API
 const API_BASE = '/statistics/statistics/metricas/';
 
+// Configuración de axios
+axios.defaults.timeout = 10000; // 10 segundos de timeout
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+
+// Interceptor para manejo de errores globales
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response) {
+            // Error del servidor (4xx, 5xx)
+            console.error('Error de respuesta:', error.response.status, error.response.data);
+            return Promise.reject(new Error(`HTTP ${error.response.status}: ${error.response.statusText}`));
+        } else if (error.request) {
+            // Error de red
+            console.error('Error de red:', error.request);
+            return Promise.reject(new Error('Error de conexión. Verifica tu conexión a internet.'));
+        } else {
+            // Error en la configuración
+            console.error('Error de configuración:', error.message);
+            return Promise.reject(error);
+        }
+    }
+);
+
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
     setThisMonth();
@@ -22,7 +46,17 @@ function setThisMonth() {
 }
 
 /**
- * Carga las estadísticas desde la API
+ * Establece las fechas para el día de hoy
+ */
+function setToday() {
+    const today = new Date().toISOString().split('T')[0];
+    
+    document.getElementById('startDate').value = today;
+    document.getElementById('endDate').value = today;
+}
+
+/**
+ * Carga las estadísticas desde la API usando axios
  */
 async function loadStatistics() {
     const startDate = document.getElementById('startDate').value;
@@ -42,13 +76,14 @@ async function loadStatistics() {
     hideError();
 
     try {
-        const response = await fetch(`${API_BASE}?start=${startDate}&end=${endDate}`);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
+        const response = await axios.get(API_BASE, {
+            params: {
+                start: startDate,
+                end: endDate
+            }
+        });
 
-        const data = await response.json();
+        const data = response.data;
         
         if (data.error) {
             throw new Error(data.error);
