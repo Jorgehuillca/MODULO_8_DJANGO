@@ -45,15 +45,13 @@ function setThisMonth() {
     document.getElementById('endDate').value = end;
 }
 
-//Establece las fechas para el día de hoy
-/* eslint-disable no-undef */
+// Establece las fechas para el día de hoy
 function setToday() {
     const today = new Date().toISOString().split('T')[0];
     
     document.getElementById('startDate').value = today;
     document.getElementById('endDate').value = today;
 }
-/* eslint-enable no-undef */
 
 // Carga las estadísticas desde la API usando axios
 
