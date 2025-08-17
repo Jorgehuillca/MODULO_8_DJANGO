@@ -52,6 +52,8 @@ function setToday() {
     document.getElementById('startDate').value = today;
     document.getElementById('endDate').value = today;
 }
+// Hacer la función disponible globalmente
+window.setToday = setToday;
 
 // Carga las estadísticas desde la API usando axios
 
