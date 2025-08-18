@@ -133,10 +133,6 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
         context['request'] = self.request
         return context
 
-
-def company_view(request):
-    return render(request, 'company/company_details.html') #para el html ps papeto
-
 def company_form_view(request):
     """Vista para el formulario de gestión de empresas"""
     return render(request, 'company/company_form.html')
