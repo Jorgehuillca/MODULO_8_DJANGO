@@ -44,10 +44,10 @@ modulo8/
 Modelo Company en company/models.py:
 
 class Company(models.Model):
-    name = models.CharField(max_length=100)
-    ruc = models.CharField(max_length=20)
-    logo = models.ImageField(upload_to='company/logos/')
-    # ... (otros campos según tu models.py)
+- name = models.CharField(max_length=100)
+- ruc = models.CharField(max_length=20)
+- logo = models.ImageField(upload_to='company/logos/')
+- ... (y demás campos según el archivo models.py)
 
 APIs REST en company/urls.py (DRF).
 
