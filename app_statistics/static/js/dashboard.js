@@ -1,7 +1,7 @@
 let charts = {};
 
 // Configuración de la API
-const API_BASE = '/statistics/statistics/metricas/';
+const API_BASE = '/statistics/metricas/';
 
 // Configuración de axios
 axios.defaults.timeout = 10000; // 10 segundos de timeout

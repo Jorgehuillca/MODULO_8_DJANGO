@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 from django.http import FileResponse, Http404
 from django.conf import settings
@@ -60,14 +60,11 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
         company.save()
         return Response({"message": "Logo eliminado correctamente"}, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['post'], parser_classes=[MultiPartParser, FormParser])
+    @action(detail=False, methods=['post'], parser_classes=[MultiPartParser, FormParser, JSONParser])
     def store(self, request):
         """Crea o actualiza datos de la empresa y procesa el logo si se envía."""
         # Extraer datos del formulario correctamente
-        data = {
-            'id': request.POST.get('id'),
-            'company_name': request.POST.get('company_name')
-        }
+        data = request.data  # <-- funciona para JSON y form-data
         
         # Intentar obtener el archivo con diferentes nombres
         file = request.FILES.get('logo') or request.FILES.get('company_logo')
