@@ -20,6 +20,7 @@ htmlcov/
 .env
 
 #Archivos temporales en carpetas de migraciones
+migrations/
 **/migrations/*.pyc
 **/migrations/__pycache__/
 

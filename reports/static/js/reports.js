@@ -1,16 +1,37 @@
 /**
- * Dashboard de Reportes - Sistema de Gestión de Citas
- * Script principal para manejar la interfaz y las llamadas a las APIs
+ * Configuración de Axios
  */
+function setupAxios() {
+    // Configuración de axios
+    axios.defaults.timeout = 10000; // 10 segundos de timeout
+    axios.defaults.headers.common['Content-Type'] = 'application/json';
 
-// Variables globales
-//const API_BASE_URL = '';
-const DATE_FORMAT = 'YYYY-MM-DD';
+    // Interceptor para manejo de errores globales
+    axios.interceptors.response.use(
+        response => response,
+        error => {
+            if (error.response) {
+                // Error del servidor (4xx, 5xx)
+                console.error('Error de respuesta:', error.response.status, error.response.data);
+                return Promise.reject(new Error(`HTTP ${error.response.status}: ${error.response.statusText}`));
+            } else if (error.request) {
+                // Error de red
+                console.error('Error de red:', error.request);
+                return Promise.reject(new Error('Error de conexión. Verifica tu conexión a internet.'));
+            } else {
+                // Error en la configuración
+                console.error('Error de configuración:', error.message);
+                return Promise.reject(error);
+            }
+        }
+    );
+}
 
 /**
  * Inicialización del dashboard
  */
 document.addEventListener('DOMContentLoaded', function() {
+    setupAxios(); // Configurar axios
     initializeDashboard();
 });
 
@@ -32,20 +53,16 @@ function initializeDashboard() {
 }
 
 /**
- * Función genérica para realizar peticiones a las APIs
+ * Función genérica para realizar peticiones a las APIs usando Axios
  * @param {string} url - URL de la API
  * @returns {Promise} - Promise con los datos de respuesta
  */
 async function fetchData(url) {
     try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.json();
+        const response = await axios.get(url);
+        return response.data;
     } catch (error) {
-        showNotification('Error al cargar datos: ' + error.message, 'error');
-        console.error('Error en fetchData:', error);
+        handleNetworkError(error, 'fetchData');
         throw error;
     }
 }
@@ -382,7 +399,7 @@ function formatDate(dateString) {
 function handleNetworkError(error, context = '') {
     console.error(`Network error in ${context}:`, error);
     
-    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+    if (error.message.includes('Error de conexión')) {
         showNotification('Error de conexión. Verifica tu conexión a internet.', 'error');
     } else if (error.message.includes('500')) {
         showNotification('Error interno del servidor. Contacta al administrador.', 'error');
@@ -448,7 +465,6 @@ document.querySelectorAll('.card-header').forEach(header => {
         header.classList.toggle('active');
     });
 });
-
 
 // colocado por nicolayus terminado
 

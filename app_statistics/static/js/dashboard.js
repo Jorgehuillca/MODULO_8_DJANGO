@@ -1,7 +1,31 @@
 let charts = {};
 
 // Configuración de la API
-const API_BASE = '/statistics/statistics/metricas/';
+const API_BASE = '/statistics/metricas/';
+
+// Configuración de axios
+axios.defaults.timeout = 10000; // 10 segundos de timeout
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+
+// Interceptor para manejo de errores globales
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response) {
+            // Error del servidor (4xx, 5xx)
+            console.error('Error de respuesta:', error.response.status, error.response.data);
+            return Promise.reject(new Error(`HTTP ${error.response.status}: ${error.response.statusText}`));
+        } else if (error.request) {
+            // Error de red
+            console.error('Error de red:', error.request);
+            return Promise.reject(new Error('Error de conexión. Verifica tu conexión a internet.'));
+        } else {
+            // Error en la configuración
+            console.error('Error de configuración:', error.message);
+            return Promise.reject(error);
+        }
+    }
+);
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
@@ -9,18 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
     loadStatistics();
 });
 
-/**
- * Establece la fecha de hoy en los controles
- */
-function setToday() {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('startDate').value = today;
-    document.getElementById('endDate').value = today;
-}
 
-/**
- * Establece las fechas del mes actual
- */
+//Establece las fechas del mes actual
+
 function setThisMonth() {
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
@@ -30,9 +45,18 @@ function setThisMonth() {
     document.getElementById('endDate').value = end;
 }
 
-/**
- * Carga las estadísticas desde la API
- */
+// Establece las fechas para el día de hoy
+function setToday() {
+    const today = new Date().toISOString().split('T')[0];
+    
+    document.getElementById('startDate').value = today;
+    document.getElementById('endDate').value = today;
+}
+// Hacer la función disponible globalmente
+window.setToday = setToday;
+
+// Carga las estadísticas desde la API usando axios
+
 async function loadStatistics() {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
@@ -51,13 +75,14 @@ async function loadStatistics() {
     hideError();
 
     try {
-        const response = await fetch(`${API_BASE}?start=${startDate}&end=${endDate}`);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
+        const response = await axios.get(API_BASE, {
+            params: {
+                start: startDate,
+                end: endDate
+            }
+        });
 
-        const data = await response.json();
+        const data = response.data;
         
         if (data.error) {
             throw new Error(data.error);
@@ -81,7 +106,7 @@ function renderDashboard(data) {
     document.getElementById('totalPacientes').textContent = data.metricas.ttlpacientes || 0;
     document.getElementById('totalSesiones').textContent = data.metricas.ttlsesiones || 0;
     document.getElementById('totalGanancias').textContent = 
-        `S/ ${(data.metricas.ttlganancias || 0).toFixed(2)}`;
+        `S/ ${formatCurrency(data.metricas.ttlganancias || 0)}`;
 
     // Gráficos
     renderIngresosChart(data.ingresos);
@@ -104,6 +129,7 @@ function renderIngresosChart(ingresos) {
     
     if (charts.ingresos) charts.ingresos.destroy();
 
+    // eslint-disable-next-line no-undef
     charts.ingresos = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -145,6 +171,7 @@ function renderSesionesChart(sesiones) {
     
     if (charts.sesiones) charts.sesiones.destroy();
 
+    // eslint-disable-next-line no-undef
     charts.sesiones = new Chart(ctx, {
         type: 'line',
         data: {
@@ -191,6 +218,7 @@ function renderPagoChart(tipos_pago) {
 
     const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
 
+    // eslint-disable-next-line no-undef
     charts.pago = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -215,6 +243,7 @@ function renderPacientesChart(tipos_pacientes) {
     
     if (charts.pacientes) charts.pacientes.destroy();
 
+    // eslint-disable-next-line no-undef
     charts.pacientes = new Chart(ctx, {
         type: 'pie',
         data: {
@@ -248,7 +277,7 @@ function renderTherapists(terapeutas) {
                 <div class="therapist-name">${terapeuta.terapeuta}</div>
                 <div class="therapist-stats">
                     <span>📅 ${terapeuta.sesiones} sesiones</span>
-                    <span>💰 S/ ${terapeuta.ingresos.toFixed(2)}</span>
+                    <span>💰 S/ ${formatNumber(terapeuta.ingresos)}</span>
                 </div>
             </div>
             <div class="therapist-rating">⭐ ${terapeuta.raiting}/5</div>
@@ -301,5 +330,5 @@ function formatCurrency(amount) {
     return new Intl.NumberFormat('es-PE', {
         style: 'currency',
         currency: 'PEN'
-    }).format(amount);
+    }).format(amount).replace('PEN', '').trim();
 }

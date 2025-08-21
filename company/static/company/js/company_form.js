@@ -3,6 +3,30 @@ class CompanyManager {
         this.baseUrl = '/company/company/';
         this.currentEditId = null;
         this.init();
+        this.setupAxios();
+    }
+
+    setupAxios() {
+        // Configuración de axios
+        axios.defaults.timeout = 10000;
+        axios.defaults.headers.common['X-CSRFToken'] = this.getCsrfToken();
+
+        // Interceptor para manejo de errores
+        axios.interceptors.response.use(
+            response => response,
+            error => {
+                if (error.response) {
+                    console.error('Error de respuesta:', error.response.status, error.response.data);
+                    return Promise.reject(new Error(error.response.data.error || `HTTP ${error.response.status}: ${error.response.statusText}`));
+                } else if (error.request) {
+                    console.error('Error de red:', error.request);
+                    return Promise.reject(new Error('Error de conexión. Verifica tu conexión a internet.'));
+                } else {
+                    console.error('Error de configuración:', error.message);
+                    return Promise.reject(error);
+                }
+            }
+        );
     }
 
     init() {
@@ -132,29 +156,22 @@ class CompanyManager {
         this.showLoading(true);
         
         try {
-            const response = await fetch(`${this.baseUrl}store/`, {
-                method: 'POST',
-                body: formData,
+            await axios.post(`${this.baseUrl}store/`, formData, {
                 headers: {
+                    'Content-Type': 'multipart/form-data',
                     'X-CSRFToken': this.getCsrfToken()
                 }
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                this.showToast(
-                    companyId ? 'Empresa actualizada correctamente' : 'Empresa creada correctamente',
-                    'success'
-                );
-                this.resetForm();
-                this.loadCompanies();
-            } else {
-                this.showToast(data.error || 'Error al guardar la empresa', 'error');
-            }
+            this.showToast(
+                companyId ? 'Empresa actualizada correctamente' : 'Empresa creada correctamente',
+                'success'
+            );
+            this.resetForm();
+            this.loadCompanies();
         } catch (error) {
             console.error('Error:', error);
-            this.showToast('Error de conexión', 'error');
+            this.showToast(error.message || 'Error al guardar la empresa', 'error');
         } finally {
             this.showLoading(false);
         }
@@ -164,17 +181,13 @@ class CompanyManager {
         this.showLoading(true);
         
         try {
-            const response = await fetch(`${this.baseUrl}`);
-            const data = await response.json();
+            const response = await axios.get(this.baseUrl);
+            const data = response.data;
 
-            if (response.ok) {
-                this.renderCompanies(data.data || data);
-            } else {
-                this.showToast('Error al cargar las empresas', 'error');
-            }
+            this.renderCompanies(data.data || data);
         } catch (error) {
             console.error('Error:', error);
-            this.showToast('Error de conexión al cargar empresas', 'error');
+            this.showToast('Error al cargar las empresas', 'error');
         } finally {
             this.showLoading(false);
         }
@@ -235,28 +248,24 @@ class CompanyManager {
 
     async editCompany(id) {
         try {
-            const response = await fetch(`${this.baseUrl}${id}/show/`);
-            const result = await response.json();
+            const response = await axios.get(`${this.baseUrl}${id}/show/`);
+            const result = response.data;
 
-            if (response.ok) {
-                const company = result.data;
-                document.getElementById('company-id').value = company.id;
-                document.getElementById('company-name').value = company.company_name;
-                document.getElementById('form-title').textContent = 'Editar Empresa';
-                document.getElementById('submit-btn').innerHTML = '<i class="fas fa-save"></i> Actualizar Empresa';
-                document.getElementById('reset-form').style.display = 'inline-flex';
+            const company = result.data;
+            document.getElementById('company-id').value = company.id;
+            document.getElementById('company-name').value = company.company_name;
+            document.getElementById('form-title').textContent = 'Editar Empresa';
+            document.getElementById('submit-btn').innerHTML = '<i class="fas fa-save"></i> Actualizar Empresa';
+            document.getElementById('reset-form').style.display = 'inline-flex';
 
-                // Scroll to form
-                document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+            // Scroll to form
+            document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
 
-                this.currentEditId = id;
-                this.showToast('Empresa cargada para edición', 'info');
-            } else {
-                this.showToast('Error al cargar la empresa', 'error');
-            }
+            this.currentEditId = id;
+            this.showToast('Empresa cargada para edición', 'info');
         } catch (error) {
             console.error('Error:', error);
-            this.showToast('Error de conexión', 'error');
+            this.showToast('Error al cargar la empresa', 'error');
         }
     }
 
@@ -266,24 +275,17 @@ class CompanyManager {
         }
 
         try {
-            const response = await fetch(`${this.baseUrl}${id}/delete_logo/`, {
-                method: 'DELETE',
+            await axios.delete(`${this.baseUrl}${id}/delete_logo/`, {
                 headers: {
                     'X-CSRFToken': this.getCsrfToken()
                 }
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                this.showToast('Logo eliminado correctamente', 'success');
-                this.loadCompanies();
-            } else {
-                this.showToast(data.error || 'Error al eliminar el logo', 'error');
-            }
+            this.showToast('Logo eliminado correctamente', 'success');
+            this.loadCompanies();
         } catch (error) {
             console.error('Error:', error);
-            this.showToast('Error de conexión', 'error');
+            this.showToast(error.message || 'Error al eliminar el logo', 'error');
         }
     }
 
@@ -293,27 +295,22 @@ class CompanyManager {
         }
 
         try {
-            const response = await fetch(`${this.baseUrl}${id}/`, {
-                method: 'DELETE',
+            await axios.delete(`${this.baseUrl}${id}/`, {
                 headers: {
                     'X-CSRFToken': this.getCsrfToken()
                 }
             });
 
-            if (response.ok) {
-                this.showToast('Empresa eliminada correctamente', 'success');
-                this.loadCompanies();
-                
-                // Reset form if we were editing this company
-                if (this.currentEditId === id) {
-                    this.resetForm();
-                }
-            } else {
-                this.showToast('Error al eliminar la empresa', 'error');
+            this.showToast('Empresa eliminada correctamente', 'success');
+            this.loadCompanies();
+            
+            // Reset form if we were editing this company
+            if (this.currentEditId === id) {
+                this.resetForm();
             }
         } catch (error) {
             console.error('Error:', error);
-            this.showToast('Error de conexión', 'error');
+            this.showToast('Error al eliminar la empresa', 'error');
         }
     }
 

@@ -3,7 +3,7 @@ from app_statistics.views import StatisticsViewSet, dashboard_view
 from django.urls import path, include
 
 router = DefaultRouter()
-router.register(r'statistics', StatisticsViewSet, basename='statistics')
+router.register(r'', StatisticsViewSet, basename='statistics')
 
 urlpatterns = [
     path('dashboard/', dashboard_view, name='statistics_dashboard'),

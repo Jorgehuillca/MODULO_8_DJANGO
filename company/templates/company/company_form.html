@@ -1,11 +1,13 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Empresas</title>
     <link rel="stylesheet" href="{% static 'company/css/company_form.css' %}">
+    <!-- Axios CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -102,7 +104,7 @@
         <div id="image-modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <img id="modal-image" src="" alt="Logo de empresa">
+                <img id="modal-image" src="{% static 'img/placeholder.png' %}" alt="Logo de empresa">
                 <div class="modal-caption">
                     <h3 id="modal-company-name"></h3>
                 </div>
