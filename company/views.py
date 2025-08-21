@@ -15,7 +15,7 @@ from .services import CompanyService
 class CompanyDataViewSet(viewsets.ModelViewSet):
     queryset = CompanyData.objects.all()
     serializer_class = CompanyDataSerializer
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_logo(self, request, pk=None):
@@ -76,7 +76,7 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
     
         if not company:
             return Response({"error": "No se pudo crear/actualizar la empresa"}, 
-                       status=status.HTTP_400_BAD_REQUEST)
+                    status=status.HTTP_400_BAD_REQUEST)
 
         serializer = CompanyDataSerializer(company, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
