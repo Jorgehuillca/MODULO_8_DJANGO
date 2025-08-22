@@ -137,7 +137,7 @@ class PDFExportView:
         # Preparar contexto usando serializer
         context_data = {
             'date': serializer.validated_data.get('date'),
-            'data': data,
+            'data': {'therapists': data},  # Envolver en un diccionario con la clave 'therapists'
             'title': 'Pacientes por Terapeuta'
         }
         context_serializer = PDFContextSerializer(context_data)
@@ -164,7 +164,7 @@ class PDFExportView:
         # Preparar contexto usando serializer
         context_data = {
             'date': serializer.validated_data.get('date'),
-            'data': data,
+            'data': {'payments': data},  # Envolver en un diccionario con la clave 'payments'
             'total': total,
             'title': 'Resumen de Caja Diaria'
         }

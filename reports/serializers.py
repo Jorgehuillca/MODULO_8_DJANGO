@@ -91,7 +91,7 @@ class PDFContextSerializer(serializers.Serializer):
     """Serializa contexto para templates PDF."""
     
     date = serializers.CharField()
-    data = serializers.DictField(required=False)
+    data = serializers.JSONField(required=False)  # Cambiado a JSONField para aceptar dict o list
     title = serializers.CharField()
     total = serializers.FloatField(required=False)
     total_appointments = serializers.IntegerField(required=False)
@@ -102,4 +102,10 @@ class PDFContextSerializer(serializers.Serializer):
         # Asegurar que date esté en formato string
         if hasattr(data['date'], 'strftime'):
             data['date'] = data['date'].strftime('%Y-%m-%d')
+        
+        # Asegurar que los datos estén en el formato correcto para la plantilla
+        if 'data' in data:
+            if isinstance(data['data'], list):
+                # Para resumen_caja y pacientes_terapeuta
+                data['data'] = {'payments': data['data']} if 'total' in data else {'therapists': data['data']}
         return data

@@ -33,7 +33,7 @@
         
         {% for patient in therapist.patients %}
         <div class="patient-item">
-            {{ patient.patient }} - {{ patient.appointments }} cita{{ patient.appointments|pluralize }}
+            [ID: {{ patient.patient_id }}] {{ patient.patient }} - {{ patient.appointments }} cita{{ patient.appointments|pluralize }}
         </div>
         {% endfor %}
     </div>
