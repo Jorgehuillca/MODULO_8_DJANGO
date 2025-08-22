@@ -17,7 +17,8 @@
 </head>
 <body>
     <h1>{{ title }}</h1>
-    <p class="date">Fecha: {{ date }}</p>
+    <p class="date">Fecha del reporte: {{ date }}</p>
+    <p class="date" style="font-size: 0.9em; color: #666;">Generado el: {% now "d/m/Y H:i:s" %}</p>
     
     <table>
         <thead>
