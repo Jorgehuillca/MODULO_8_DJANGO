@@ -91,9 +91,10 @@ class PDFContextSerializer(serializers.Serializer):
     """Serializa contexto para templates PDF."""
     
     date = serializers.CharField()
-    data = serializers.DictField()
+    data = serializers.DictField(required=False)
     title = serializers.CharField()
     total = serializers.FloatField(required=False)
+    total_appointments = serializers.IntegerField(required=False)
     
     def to_representation(self, instance):
         """Formatea contexto para PDF."""
