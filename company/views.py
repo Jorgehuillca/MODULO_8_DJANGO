@@ -4,18 +4,61 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 from django.http import FileResponse, Http404
 from django.conf import settings
-from django.shortcuts import render #para la vista html
-import os
+from django.shortcuts import render
+from rest_framework.views import APIView
 
 from .models import CompanyData
 from .serializers import CompanyDataSerializer, UploadImageRequest
 from .services import CompanyService
 
 
+class LogoFileView(APIView):
+    """Responsable exclusivamente del manejo de archivos de logos."""
+    
+    def get_logo_file_response(self, company):
+        """Genera la respuesta del archivo de logo."""
+        if not company.company_logo:
+            raise Http404("La empresa no tiene logo")
+        
+        # Usar el storage de Django en lugar de os.path
+        try:
+            return FileResponse(company.company_logo.open('rb'))
+        except Exception:
+            raise Http404("Archivo de logo no encontrado")
+    
+    def delete_logo_file(self, company):
+        """Elimina el archivo de logo de una empresa."""
+        CompanyService.clear_company_logo(company)
+        return {"message": "Logo eliminado correctamente"}
+
+
+class CompanyBusinessView(APIView):
+    """Responsable exclusivamente de la lógica de negocio de empresas."""
+    
+    def preserve_logo_on_update(self, instance, current_logo):
+        """Preserva el logo existente si no se envía uno nuevo."""
+        if current_logo and not instance.company_logo:
+            instance.company_logo = current_logo
+            instance.save()
+    
+    def handle_logo_update(self, instance, request):
+        """Maneja la actualización de logos en el update."""
+        if 'logo' in request.FILES or 'company_logo' in request.FILES:
+            return True  # Indicar que se debe usar el store method
+        return False
+
+
 class CompanyDataViewSet(viewsets.ModelViewSet):
+    """API REST pura para empresas. Delega responsabilidades específicas."""
+    
     queryset = CompanyData.objects.all()
     serializer_class = CompanyDataSerializer
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.logo_view = LogoFileView()
+        self.business_view = CompanyBusinessView()
 
     @action(detail=True, methods=['post'], parser_classes=[MultiPartParser, FormParser])
     def upload_logo(self, request, pk=None):
@@ -42,31 +85,19 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
         except Http404:
             raise Http404("Empresa no encontrada")
 
-        if not company.company_logo:
-            raise Http404("La empresa no tiene logo")
-
-        file_path = os.path.join(settings.MEDIA_ROOT, company.company_logo.name)
-        if not os.path.exists(file_path):
-            raise Http404("Archivo de logo no encontrado")
-
-        return FileResponse(open(file_path, 'rb'))
+        return self.logo_view.get_logo_file_response(company)
 
     @action(detail=True, methods=['delete'])
     def delete_logo(self, request, pk=None):
         """Elimina el logo de la empresa."""
         company = self.get_object()
-        CompanyService.clear_company_logo(company)  # Cambio aquí
-        company.company_logo = None
-        company.save()
-        return Response({"message": "Logo eliminado correctamente"}, status=status.HTTP_200_OK)
+        result = self.logo_view.delete_logo_file(company)
+        return Response(result, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'], parser_classes=[MultiPartParser, FormParser, JSONParser])
     def store(self, request):
         """Crea o actualiza datos de la empresa y procesa el logo si se envía."""
-        # Extraer datos del formulario correctamente
-        data = request.data  # <-- funciona para JSON y form-data
-        
-        # Intentar obtener el archivo con diferentes nombres
+        data = request.data
         file = request.FILES.get('logo') or request.FILES.get('company_logo')
     
         try:
@@ -108,20 +139,16 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
         """Sobrescribe el update para preservar el logo al actualizar el nombre"""
         instance = self.get_object()
         
-        # Si hay archivo de logo en la request, usamos el store method
-        if 'logo' in request.FILES or 'company_logo' in request.FILES:
+        # Usar CompanyBusinessView para manejar la lógica de negocio
+        if self.business_view.handle_logo_update(instance, request):
             return super().update(request, *args, **kwargs)
         
         # Si solo actualizamos datos sin logo, preservamos el logo existente
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
-            # Guardamos el logo actual antes de la actualización
             current_logo = instance.company_logo
             serializer.save()
-            # Restauramos el logo si no se envió uno nuevo
-            if current_logo and not instance.company_logo:
-                instance.company_logo = current_logo
-                instance.save()
+            self.business_view.preserve_logo_on_update(instance, current_logo)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -129,6 +156,7 @@ class CompanyDataViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         context['request'] = self.request
         return context
+
 
 def company_form_view(request):
     """Vista para el formulario de gestión de empresas"""
